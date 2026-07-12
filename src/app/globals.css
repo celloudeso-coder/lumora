@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+/* ============================================================
+   LUMORA GROUP — Tokens de la charte graphique
+   Vert forêt profond / Or bronze / Crème (extraits du logo)
+   ============================================================ */
+
+@theme {
+  /* Vert forêt — couleur de marque */
+  --color-forest-950: #0c1d15;
+  --color-forest-900: #122a1f;
+  --color-forest-800: #163526;
+  --color-forest: #1a3d2e; /* base marque */
+  --color-forest-600: #2a5a44;
+  --color-forest-500: #3a7458;
+  --color-forest-100: #dde8e1;
+  --color-forest-50: #eef4f0;
+
+  /* Or / bronze — accents premium */
+  --color-gold-700: #a17c35;
+  --color-gold-600: #b58e45;
+  --color-gold: #c9a35c; /* base */
+  --color-gold-300: #dcc088;
+  --color-gold-100: #f0e4c9;
+
+  /* Crème — fonds */
+  --color-cream: #f5f0e8; /* base */
+  --color-cream-50: #fbf8f3;
+  --color-cream-200: #ece4d5;
+  --color-cream-300: #e0d5bf;
+
+  /* Typographies (variables injectées par next/font dans layout.tsx) */
+  --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-jost), system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-forest);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
+/* Cible tactile confortable par défaut sur les éléments interactifs */
+@layer base {
+  button,
+  a.btn,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+}
+
+/* Boutons de marque réutilisables */
+@layer components {
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium tracking-wide transition-colors;
+  }
+  .btn-primary {
+    @apply btn bg-forest text-cream hover:bg-forest-600 active:bg-forest-800;
+  }
+  .btn-gold {
+    @apply btn bg-gold text-forest-950 hover:bg-gold-300 active:bg-gold-600;
+  }
+  .btn-outline {
+    @apply btn border border-gold text-forest hover:bg-gold-100;
+  }
+}

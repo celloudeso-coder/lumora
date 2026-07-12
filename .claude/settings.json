@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --yes create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --yes)",
+      "Bash(mv /tmp/claude-1000/-home-clvx-Documents-LYNXADocuments-lumora/45385276-4319-4beb-9062-05fa574668d8/scratchpad/keep/ARCHITECTURE.md /tmp/claude-1000/-home-clvx-Documents-LYNXADocuments-lumora/45385276-4319-4beb-9062-05fa574668d8/scratchpad/keep/.claude . 2>/dev/null; cat package.json)",
+      "Bash(kill 358048 392033 392035 413804)",
+      "Bash(pkill -f \"npm install\")",
+      "Bash(grep -m5 -A2 \"error\" /home/clvx/.npm/_logs/2026-07-12T18_44_04_601Z-debug-0.log | head -20)",
+      "Read(//home/clvx/.npm/_logs/**)",
+      "Bash(grep -m3 -B1 -A6 \"npm error\" /home/clvx/.npm/_logs/2026-07-12T18_44_04_601Z-debug-0.log | head -30)",
+      "Bash(tail -25 /home/clvx/.npm/_logs/2026-07-12T18_44_04_601Z-debug-0.log)",
+      "Bash(echo \"exit=$?\")"
+    ],
+    "additionalDirectories": [
+      "/tmp/claude-1000/-home-clvx-Documents-LYNXADocuments-lumora/45385276-4319-4beb-9062-05fa574668d8/scratchpad/keep/.claude"
+    ]
+  }
+}
