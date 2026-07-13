@@ -58,7 +58,7 @@ export default function ConstructionPage() {
           {SERVICES.map((s) => (
             <div
               key={s.title}
-              className="rounded-2xl border border-gold/30 bg-cream-50 p-5"
+              className="edge-gold panel-forest rounded-2xl border border-gold/30 bg-cream-50 p-5"
             >
               <s.icon className="h-7 w-7 text-gold-600" />
               <h3 className="mt-3 font-display text-xl font-semibold text-forest">

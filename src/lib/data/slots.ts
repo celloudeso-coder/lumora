@@ -1,36 +1,49 @@
-// Couche d'accès aux créneaux Pilates.
-// TODO Supabase : remplacer les mocks par des requêtes sur la table
-// `class_slots` (voir supabase/schema.sql) sans changer les signatures.
+// Couche d'accès aux créneaux Pilates — fonction `open_slots()` (Supabase),
+// qui expose les créneaux ouverts à venir avec les places restantes sans
+// donner d'accès public à la table `bookings`.
+// Les signatures sont stables : les composants ne connaissent pas Supabase.
+
+import { createPublicServerClient } from "@/lib/supabase/server";
+import type { CourseFormat } from "./pilates-pricing";
 
 export type ClassSlot = {
   id: string;
   title: string;
+  format: CourseFormat;
   startsAt: string; // ISO
   durationMin: number;
   capacity: number;
   remaining: number;
 };
 
-/** Prochains créneaux ouverts, générés sur la semaine à venir. */
+type OpenSlotRow = {
+  id: string;
+  title: string;
+  format: string;
+  starts_at: string;
+  duration_min: number;
+  capacity: number;
+  remaining: number;
+};
+
+/** Prochains créneaux ouverts, triés par date de début. */
 export async function getOpenSlots(): Promise<ClassSlot[]> {
-  const base = new Date();
-  base.setHours(0, 0, 0, 0);
+  const supabase = createPublicServerClient();
+  const { data, error } = await supabase.rpc("open_slots");
 
-  const at = (dayOffset: number, hour: number) => {
-    const d = new Date(base);
-    d.setDate(d.getDate() + dayOffset);
-    d.setHours(hour, 0, 0, 0);
-    return d.toISOString();
-  };
+  if (error) {
+    throw new Error(`Lecture des créneaux impossible : ${error.message}`);
+  }
 
-  return [
-    { id: "s1", title: "Pilates Mat — Débutant", startsAt: at(1, 8), durationMin: 60, capacity: 8, remaining: 3 },
-    { id: "s2", title: "Pilates Mat — Intermédiaire", startsAt: at(1, 18), durationMin: 60, capacity: 8, remaining: 5 },
-    { id: "s3", title: "Pilates Stretch & Relax", startsAt: at(3, 18), durationMin: 45, capacity: 10, remaining: 7 },
-    { id: "s4", title: "Pilates Mat — Débutant", startsAt: at(4, 8), durationMin: 60, capacity: 8, remaining: 2 },
-    { id: "s5", title: "Pilates Prénatal", startsAt: at(6, 10), durationMin: 45, capacity: 6, remaining: 4 },
-    { id: "s6", title: "Pilates Mat — Intermédiaire", startsAt: at(6, 17), durationMin: 60, capacity: 8, remaining: 8 },
-  ];
+  return (data as OpenSlotRow[]).map((row) => ({
+    id: row.id,
+    title: row.title,
+    format: row.format as CourseFormat,
+    startsAt: row.starts_at,
+    durationMin: row.duration_min,
+    capacity: row.capacity,
+    remaining: row.remaining,
+  }));
 }
 
 export function formatSlotDate(iso: string): string {

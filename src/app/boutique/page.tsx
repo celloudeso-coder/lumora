@@ -57,7 +57,7 @@ export default function BoutiquePage() {
           {CATEGORIES.map((c) => (
             <div
               key={c.title}
-              className="rounded-2xl border border-gold/30 bg-cream-50 p-5"
+              className="edge-gold panel-forest rounded-2xl border border-gold/30 bg-cream-50 p-5"
             >
               <h3 className="font-display text-xl font-semibold text-forest">
                 {c.title}

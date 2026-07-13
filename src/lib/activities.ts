@@ -32,6 +32,9 @@ export const ACTIVITIES: Activity[] = [
     slug: "construction",
     name: "Lumora Construction",
     shortName: "Construction",
+    // TODO : le kakémono mentionne « BTP - Immobilier » — clarifier avec la
+    // cliente si un volet immobilier doit être ajouté (aucun contenu
+    // immobilier sur le site pour l'instant).
     tagline: "Building Futures",
     pitch:
       "Construction, rénovation et matériaux de qualité pour vos projets résidentiels et professionnels à Conakry.",
@@ -68,6 +71,8 @@ export const ACTIVITIES: Activity[] = [
     slug: "pressing",
     name: "Lumora Pressing",
     shortName: "Pressing",
+    // TODO : le logo dit « Professional Care » mais un kakémono affiche
+    // « Luxury Garment Care » — tagline à confirmer avec la cliente.
     tagline: "Professional Care",
     pitch:
       "Nettoyage et entretien professionnel de vos vêtements et textiles, avec le soin du détail.",

@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
+import { LOGO_PHOTO } from "@/lib/images";
 
 /**
- * Version plate du logo LUMORA GROUP pour le web, dérivée de la plaque
- * 3D officielle : feuille de thé cerclée d'or + wordmark serif.
- * `tone="dark"` pour les fonds vert forêt, `tone="light"` pour les fonds crème.
+ * Version plate (feuille de thé cerclée d'or) — icône compacte réutilisée
+ * là où le logo doit rester lisible en très petit sur fond clair/sombre.
  */
 export function LeafMark({ className }: { className?: string }) {
   return (
@@ -36,33 +37,43 @@ export function LeafMark({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Logo officiel (plaque acrylique, PNG réel) utilisé dans le header et le
+ * footer. `height` pilote la taille rendue ; l'image est servie via
+ * next/image (WebP/AVIF, transparence préservée). Le prop `tone` est
+ * conservé pour compat mais n'affecte plus les couleurs (le PNG les porte).
+ */
 export function Logo({
-  tone = "light",
+  height = 44,
+  priority = false,
   className,
 }: {
   tone?: "light" | "dark";
+  height?: number;
+  priority?: boolean;
   className?: string;
 }) {
-  const nameColor = tone === "dark" ? "text-cream" : "text-forest";
-  const leafColor = tone === "dark" ? "text-cream" : "text-forest";
+  // Largeur d'affichage dérivée du ratio réel du fichier (2194 × 1920).
+  const width = Math.round((height * 2194) / 1920);
 
   return (
     <Link
       href="/"
-      className={`flex items-center gap-2.5 ${className ?? ""}`}
+      className={`inline-flex items-center ${className ?? ""}`}
       aria-label="LUMORA GROUP — Accueil"
     >
-      <LeafMark className={`h-9 w-9 shrink-0 ${leafColor}`} />
-      <span className="flex flex-col leading-none">
-        <span
-          className={`font-display text-xl font-semibold tracking-[0.18em] ${nameColor}`}
-        >
-          LUMORA
-        </span>
-        <span className="mt-1 text-[0.58rem] font-medium tracking-[0.52em] text-gold">
-          GROUP
-        </span>
-      </span>
+      <Image
+        src={LOGO_PHOTO.src}
+        alt="LUMORA GROUP"
+        width={2194}
+        height={1920}
+        // Variante ≥ 256px (transparente) même en petit affichage : la
+        // variante 384px de l'optimiseur perd l'alpha.
+        sizes="256px"
+        style={{ height, width }}
+        className="object-contain"
+        priority={priority}
+      />
     </Link>
   );
 }

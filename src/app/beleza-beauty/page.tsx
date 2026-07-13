@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { Gallery } from "@/components/ui/Gallery";
 import { BelezaBookingForm } from "@/components/forms/BelezaBookingForm";
 import { getActivity } from "@/lib/activities";
+import { GALLERIES } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Beleza Beauty — Institut de beauté à Conakry",
@@ -53,6 +55,13 @@ export default function BelezaPage() {
       />
 
       <Section
+        title="L'institut en images"
+        intro="Nos salles de massage et de soin, pensées pour la détente."
+      >
+        <Gallery images={GALLERIES.beleza} columns={3} />
+      </Section>
+
+      <Section
         title="Nos soins"
         intro="Carte provisoire — durées et tarifs confirmés à la prise de rendez-vous."
       >
@@ -60,7 +69,7 @@ export default function BelezaPage() {
           {TREATMENTS.map((cat) => (
             <div
               key={cat.category}
-              className="rounded-2xl border border-gold/30 bg-cream-50 p-5"
+              className="edge-gold panel-forest rounded-2xl border border-gold/30 bg-cream-50 p-5"
             >
               <h3 className="font-display text-xl font-semibold text-forest">
                 {cat.category}

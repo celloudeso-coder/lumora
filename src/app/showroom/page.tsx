@@ -3,8 +3,10 @@ import Link from "next/link";
 import { ArrowRight, Grid2x2, Lightbulb, PaintRoller, Bath, DoorOpen, Layers } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { Gallery } from "@/components/ui/Gallery";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { getActivity } from "@/lib/activities";
+import { GALLERIES } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Show Room — LUMORA GROUP à Conakry",
@@ -35,14 +37,18 @@ export default function ShowroomPage() {
       />
 
       <Section
-        title="Nos espaces d'exposition"
-        intro="Aperçu provisoire — les photos du showroom seront ajoutées prochainement."
+        title="Le showroom en images"
+        intro="Sanitaires, matériaux et échantillons exposés dans nos locaux."
       >
+        <Gallery images={GALLERIES.showroom} columns={3} />
+      </Section>
+
+      <Section title="Nos espaces d'exposition" tone="light">
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
           {SPACES.map((s) => (
             <div
               key={s.title}
-              className="flex flex-col items-center rounded-2xl border border-gold/30 bg-cream-50 p-5 text-center"
+              className="edge-gold panel-forest flex flex-col items-center rounded-2xl border border-gold/30 bg-cream-50 p-5 text-center"
             >
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-forest text-gold">
                 <s.icon className="h-7 w-7" />
@@ -57,7 +63,7 @@ export default function ShowroomPage() {
           ))}
         </div>
 
-        <div className="mt-8 rounded-2xl bg-forest p-6 text-cream sm:flex sm:items-center sm:justify-between">
+        <div className="edge-gold panel-forest mt-8 rounded-2xl bg-forest p-6 text-cream sm:flex sm:items-center sm:justify-between">
           <p className="font-light">
             Un projet de construction ou de rénovation ? Le showroom travaille
             main dans la main avec{" "}
@@ -76,7 +82,6 @@ export default function ShowroomPage() {
       <Section
         title="Demander un devis"
         intro="Décrivez ce qui vous intéresse (matériaux, quantités, projet) : nous préparons votre devis et vous recontactons."
-        tone="light"
       >
         <div className="max-w-xl">
           <LeadForm

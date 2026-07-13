@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer className="bg-forest-900 text-cream">
       {/* Bandeau des valeurs (repris de la plaque du logo) */}
-      <div className="border-b border-gold/20 bg-forest-950">
+      <div className="edge-gold border-b border-gold/20 bg-forest-950">
         <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-4 py-4 text-[0.7rem] uppercase tracking-[0.25em] text-gold">
           {VALUES.map((v) => (
             <li key={v}>{v}</li>
@@ -19,7 +19,7 @@ export function Footer() {
 
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-3 lg:px-6">
         <div className="space-y-4">
-          <Logo tone="dark" />
+          <Logo height={92} />
           <p className="text-sm font-light italic text-gold-300">
             {SITE.slogan}
           </p>

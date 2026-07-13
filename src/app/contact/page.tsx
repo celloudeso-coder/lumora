@@ -71,7 +71,7 @@ export default function ContactPage() {
                   <Clock className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="font-medium text-forest">Horaires d'accueil</p>
+                  <p className="font-medium text-forest">Horaires d’accueil</p>
                   <p className="mt-0.5 font-light text-forest/80">
                     Lundi – Samedi : 8h00 – 19h00
                   </p>

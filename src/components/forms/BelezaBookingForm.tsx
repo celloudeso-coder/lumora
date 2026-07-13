@@ -1,30 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { Field, inputClass, textareaClass, SuccessNote } from "./fields";
+import { useActionState } from "react";
+import { submitBelezaBooking } from "@/lib/actions/bookings";
+import { initialFormState } from "@/lib/actions/form-state";
+import { Field, inputClass, textareaClass, SuccessNote, ErrorNote, Honeypot } from "./fields";
 
 /**
- * Prise de rendez-vous Beleza Beauty : choix du soin + date/heure souhaitées.
- * Mode démo local — TODO Supabase : Server Action → insertion `bookings`
- * (activity='beleza', service, preferred_at).
+ * Prise de rendez-vous Beleza Beauty : choix du soin + date/heure
+ * souhaitées → Server Action `submitBelezaBooking` → table `bookings`
+ * (activity='beleza').
  */
 export function BelezaBookingForm({ services }: { services: string[] }) {
-  const [sent, setSent] = useState(false);
+  const [state, formAction, pending] = useActionState(
+    submitBelezaBooking,
+    initialFormState,
+  );
 
-  if (sent) {
+  if (state.status === "success") {
     return (
-      <SuccessNote message="Votre demande de rendez-vous a bien été enregistrée (démo locale). Beleza Beauty vous confirmera l'horaire par téléphone ou WhatsApp." />
+      <SuccessNote message="Votre demande de rendez-vous a bien été enregistrée. Beleza Beauty vous confirmera l'horaire par téléphone ou WhatsApp." />
     );
   }
 
   return (
-    <form
-      className="space-y-5"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSent(true);
-      }}
-    >
+    <form action={formAction} className="relative space-y-5">
+      <Honeypot />
+
       <Field label="Soin souhaité" required>
         <select name="service" required defaultValue="" className={inputClass}>
           <option value="" disabled>
@@ -71,8 +72,10 @@ export function BelezaBookingForm({ services }: { services: string[] }) {
         />
       </Field>
 
-      <button type="submit" className="btn-primary w-full sm:w-auto">
-        Demander ce rendez-vous
+      {state.status === "error" && <ErrorNote message={state.message} />}
+
+      <button type="submit" disabled={pending} className="btn-primary w-full disabled:opacity-60 sm:w-auto">
+        {pending ? "Envoi en cours…" : "Demander ce rendez-vous"}
       </button>
     </form>
   );

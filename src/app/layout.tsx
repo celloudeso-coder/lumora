@@ -35,6 +35,12 @@ export default function RootLayout({
       lang="fr"
       className={`${cormorant.variable} ${jost.variable} h-full antialiased`}
     >
+      <head>
+        {/* Sans JS, les blocs animés au scroll restent visibles. */}
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body className="flex min-h-full flex-col">
         <Header />
         <main className="flex-1">{children}</main>

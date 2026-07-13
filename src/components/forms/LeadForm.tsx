@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Field, inputClass, textareaClass, SuccessNote } from "./fields";
+import { useActionState } from "react";
+import { submitLead } from "@/lib/actions/leads";
+import { initialFormState } from "@/lib/actions/form-state";
+import { Field, inputClass, textareaClass, SuccessNote, ErrorNote, Honeypot } from "./fields";
 
 /**
  * Formulaire de contact / demande de devis (Construction, Pressing,
- * Boutique, Showroom, Contact général).
- *
- * Mode démo local : l'envoi affiche une confirmation sans persister.
- * TODO Supabase : brancher sur une Server Action qui insère dans `leads`.
+ * Boutique, Showroom, Contact général) → Server Action `submitLead`
+ * → table `leads`.
  */
 export function LeadForm({
   activity,
@@ -21,23 +21,18 @@ export function LeadForm({
   messageLabel?: string;
   submitLabel?: string;
 }) {
-  const [sent, setSent] = useState(false);
+  const [state, formAction, pending] = useActionState(submitLead, initialFormState);
 
-  if (sent) {
+  if (state.status === "success") {
     return (
-      <SuccessNote message="Merci ! Votre demande a bien été enregistrée (démo locale — l'envoi réel sera activé avec Supabase). Notre équipe vous recontactera rapidement par téléphone ou WhatsApp." />
+      <SuccessNote message="Merci ! Votre demande a bien été enregistrée. Notre équipe vous recontactera rapidement par téléphone ou WhatsApp." />
     );
   }
 
   return (
-    <form
-      className="space-y-5"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSent(true);
-      }}
-    >
+    <form action={formAction} className="relative space-y-5">
       <input type="hidden" name="activity" value={activity} />
+      <Honeypot />
 
       <Field label="Nom complet" required>
         <input name="name" required autoComplete="name" className={inputClass} />
@@ -83,8 +78,10 @@ export function LeadForm({
         />
       </Field>
 
-      <button type="submit" className="btn-primary w-full sm:w-auto">
-        {submitLabel}
+      {state.status === "error" && <ErrorNote message={state.message} />}
+
+      <button type="submit" disabled={pending} className="btn-primary w-full disabled:opacity-60 sm:w-auto">
+        {pending ? "Envoi en cours…" : submitLabel}
       </button>
     </form>
   );

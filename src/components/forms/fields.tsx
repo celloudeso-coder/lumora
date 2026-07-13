@@ -36,3 +36,30 @@ export function SuccessNote({ message }: { message: string }) {
     </div>
   );
 }
+
+export function ErrorNote({ message }: { message: string }) {
+  return (
+    <div
+      role="alert"
+      className="rounded-xl border border-red-200 bg-red-50 px-4 py-4 text-sm leading-relaxed text-red-800"
+    >
+      {message}
+    </div>
+  );
+}
+
+/**
+ * Champ anti-spam invisible : les humains ne le voient pas, les robots
+ * le remplissent. Les Server Actions ignorent toute soumission où il
+ * est renseigné.
+ */
+export function Honeypot() {
+  return (
+    <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
+      <label>
+        Ne pas remplir ce champ
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      </label>
+    </div>
+  );
+}

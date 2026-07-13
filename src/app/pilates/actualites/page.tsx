@@ -32,7 +32,7 @@ export default async function ActualitesPage() {
             <Link
               key={article.id}
               href={`/pilates/actualites/${article.slug}`}
-              className="group flex flex-col rounded-2xl border border-gold/30 bg-cream-50 p-5 transition-colors active:bg-gold-100 lg:hover:border-gold"
+              className="card-lift edge-gold group flex flex-col rounded-2xl border border-gold/30 bg-cream-50 p-5 lg:hover:border-gold"
             >
               <time className="text-xs uppercase tracking-widest text-gold-600">
                 {formatDate(article.publishedAt)}
@@ -44,7 +44,7 @@ export default async function ActualitesPage() {
                 {article.excerpt}
               </p>
               <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-forest">
-                Lire l'article
+                Lire l’article
                 <ArrowRight className="h-4 w-4 text-gold" />
               </span>
             </Link>

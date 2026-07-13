@@ -44,6 +44,14 @@ Un site statique pur est éliminé d'office par trois besoins :
 
 Contenu **statique dans le code** (prestations, menu du café, tarifs pressing…) pour la v1 : seuls les articles, créneaux, réservations et demandes sont en base. Le champ `activity` des articles permet d'étendre le blog aux autres activités plus tard sans migration.
 
+> **État d'implémentation (juillet 2026)** : Supabase est branché **en local** via le
+> Supabase CLI (Docker). Le schéma vit désormais dans `supabase/migrations/` (plus de
+> `supabase/schema.sql`), avec en plus la colonne `class_slots.format` (`reformer`/`mat`)
+> et la fonction `open_slots()` (places restantes sans exposer `bookings`). Les lectures
+> publiques passent par `src/lib/data/` (client anon) et les écritures par des Server
+> Actions Zod dans `src/lib/actions/` (client service role). Reste à faire : back-office
+> `/admin` et déploiement cloud.
+
 ## 3. Modèle de données (Supabase)
 
 ```sql

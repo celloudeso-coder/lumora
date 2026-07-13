@@ -34,6 +34,26 @@
   --font-body: var(--font-jost), system-ui, -apple-system, sans-serif;
 }
 
+/* ------------------------------------------------------------
+   Lumora Glass — tokens verre / lumière / ombres teintées.
+   L'effet naît de la marque : "Lumora" = lumière, le logo est une
+   plaque acrylique rétroéclairée. Verre teinté forêt + reflet or.
+   ------------------------------------------------------------ */
+:root {
+  /* Ombres portées teintées vert forêt (plutôt que gris/noir neutre) */
+  --shadow-forest-sm: 0 1px 2px rgba(26, 61, 46, 0.08),
+    0 2px 6px rgba(26, 61, 46, 0.06);
+  --shadow-forest-md: 0 6px 20px rgba(26, 61, 46, 0.12);
+  --shadow-forest-lg: 0 16px 40px rgba(26, 61, 46, 0.18);
+
+  /* Halo doré (lueur d'interaction, rappel de l'enseigne lumineuse) */
+  --glow-gold: 0 0 24px rgba(201, 163, 92, 0.35);
+  --glow-gold-strong: 0 0 34px rgba(201, 163, 92, 0.55);
+
+  /* Courbe "spring" douce pour les interactions vivantes */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 body {
   background: var(--color-cream);
   color: var(--color-forest);
@@ -57,18 +77,311 @@ h3 {
   }
 }
 
-/* Boutons de marque réutilisables */
+/* Boutons de marque réutilisables.
+   NB Tailwind v4 : `@apply` ne peut pas référencer une classe custom
+   (ex. `@apply btn`), la base est donc partagée via le sélecteur groupé. */
 @layer components {
-  .btn {
+  .btn,
+  .btn-primary,
+  .btn-gold,
+  .btn-outline {
     @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium tracking-wide transition-colors;
   }
   .btn-primary {
-    @apply btn bg-forest text-cream hover:bg-forest-600 active:bg-forest-800;
+    @apply bg-forest text-cream hover:bg-forest-600 active:bg-forest-800;
   }
   .btn-gold {
-    @apply btn bg-gold text-forest-950 hover:bg-gold-300 active:bg-gold-600;
+    @apply bg-gold text-forest-950 hover:bg-gold-300 active:bg-gold-600;
   }
   .btn-outline {
-    @apply btn border border-gold text-forest hover:bg-gold-100;
+    @apply border border-gold text-forest hover:bg-gold-100;
+  }
+
+  /* Relief au repos sur le bouton doré : il paraît "posé", pas plat. */
+  .btn-gold {
+    box-shadow: var(--shadow-forest-md);
+  }
+
+  /* Halo doré à l'interaction. hover = desktop (glow marqué),
+     active/focus-visible = tap & clavier mobile (glow discret). */
+  @media (hover: hover) {
+    .btn-primary:hover {
+      box-shadow: var(--glow-gold);
+    }
+    .btn-gold:hover {
+      box-shadow: var(--shadow-forest-md), var(--glow-gold-strong);
+    }
+  }
+  .btn-primary:active,
+  .btn-primary:focus-visible {
+    box-shadow: var(--glow-gold);
+  }
+  .btn-gold:active,
+  .btn-gold:focus-visible {
+    box-shadow: var(--shadow-forest-md), var(--glow-gold);
+  }
+
+  /* Détail signature : "sheen" — un reflet traverse le bouton doré en
+     diagonale au survol, comme l'éclat de l'enseigne lumineuse. */
+  .btn-gold {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-gold::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 1;
+    width: 45%;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(255, 251, 240, 0.5),
+      transparent
+    );
+    transform: translateX(-250%) skewX(-18deg);
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    .btn-gold:hover::after {
+      animation: lumora-sheen 750ms var(--ease-spring);
+    }
+  }
+}
+
+/* ------------------------------------------------------------
+   Utilitaires Lumora Glass (réutilisables, pas de duplication page)
+   ------------------------------------------------------------ */
+@layer components {
+  /* Verre teinté forêt : pour les surfaces sticky posées sur du contenu
+     (backdrop-filter n'a d'effet que là où du contenu défile derrière). */
+  .glass-forest {
+    background: rgba(18, 42, 31, 0.72);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    backdrop-filter: blur(14px) saturate(1.3);
+  }
+  /* Verre teinté crème : header clair, translucide sur le contenu. */
+  .glass-cream {
+    background: rgba(245, 240, 232, 0.82);
+    -webkit-backdrop-filter: blur(14px) saturate(1.25);
+    backdrop-filter: blur(14px) saturate(1.25);
+  }
+  /* Repli opaque si backdrop-filter non supporté (contraste préservé). */
+  @supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    .glass-forest {
+      background: var(--color-forest-900);
+    }
+    .glass-cream {
+      background: var(--color-cream);
+    }
+  }
+
+  /* Liseré or "reflet de lumière" en haut d'un panneau (1px dégradé). */
+  .edge-gold {
+    position: relative;
+  }
+  .edge-gold::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(201, 163, 92, 0.7),
+      transparent
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Rétroéclairage doré diffus derrière le hero (plaque acrylique). */
+  .hero-glow {
+    position: relative;
+    isolation: isolate;
+  }
+  .hero-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+      55% 45% at 50% 0%,
+      rgba(201, 163, 92, 0.2),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  /* ----- Hero d'accueil : profondeur, texture, lumière vivante -----
+     Scopé à .home-hero pour ne pas toucher les autres héros de page. */
+  .home-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* Fond de repli : dégradé radial multi-stops (clair au centre haut →
+       sombre vers les bords) = profondeur même sans photo de façade. */
+    background: radial-gradient(
+      125% 105% at 50% 8%,
+      #326b50 0%,
+      #1f4736 32%,
+      #143024 64%,
+      #0b1b13 100%
+    );
+  }
+
+  /* Overlay dégradé forêt posé sur la photo de façade quand elle existe :
+     on devine la photo tout en gardant le texte parfaitement lisible. */
+  .home-hero-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      178deg,
+      rgba(18, 42, 31, 0.82) 0%,
+      rgba(11, 27, 19, 0.93) 100%
+    );
+  }
+
+  /* Filigrane : feuilles de thé dispersées de façon organique (tailles et
+     rotations variées sur une grande tuile → pas d'effet grille), teinte
+     crème/or diluée, très discrète. */
+  .home-hero-leaves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='340' viewBox='0 0 340 340'%3E%3Cg fill='%23e6d8b8'%3E%3Cpath d='M0 17c-6-4.5-6-14 0-19 6 5 6 14.5 0 19Z' transform='translate(46 40) rotate(24) scale(1.15)'/%3E%3Cpath d='M0 17c-6-4.5-6-14 0-19 6 5 6 14.5 0 19Z' transform='translate(232 30) rotate(-38) scale(0.8)'/%3E%3Cpath d='M0 17c-6-4.5-6-14 0-19 6 5 6 14.5 0 19Z' transform='translate(158 128) rotate(72) scale(1.4)'/%3E%3Cpath d='M0 17c-6-4.5-6-14 0-19 6 5 6 14.5 0 19Z' transform='translate(300 168) rotate(8) scale(0.95)'/%3E%3Cpath d='M0 17c-6-4.5-6-14 0-19 6 5 6 14.5 0 19Z' transform='translate(70 232) rotate(-64) scale(1.05)'/%3E%3Cpath d='M0 17c-6-4.5-6-14 0-19 6 5 6 14.5 0 19Z' transform='translate(214 268) rotate(128) scale(0.75)'/%3E%3Cpath d='M0 17c-6-4.5-6-14 0-19 6 5 6 14.5 0 19Z' transform='translate(300 300) rotate(-18) scale(1.2)'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 340px 340px;
+  }
+
+  /* Halo doré doux derrière l'emblème du hero : il flotte / rayonne, sans
+     contour dur (glow radial flou). */
+  .home-emblem {
+    position: relative;
+  }
+  .home-emblem::before {
+    content: "";
+    position: absolute;
+    inset: -14%;
+    z-index: 0;
+    background: radial-gradient(
+      closest-side,
+      rgba(228, 186, 98, 0.38),
+      rgba(201, 163, 92, 0.14) 55%,
+      transparent 78%
+    );
+    filter: blur(26px);
+    pointer-events: none;
+  }
+
+  /* Rétroéclairage doré chaud qui "respire" comme une vraie plaque. */
+  .home-hero-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      44% 42% at 50% 34%,
+      rgba(226, 184, 96, 0.45),
+      rgba(201, 163, 92, 0.16) 46%,
+      transparent 72%
+    );
+    animation: lumora-breathe 9s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+
+
+  /* Carte : ombre teintée de base + élévation "spring" au survol/tap,
+     avec halo doré. Bordure or déjà posée par les classes Tailwind. */
+  .card-lift {
+    box-shadow: var(--shadow-forest-sm);
+    transition:
+      transform 300ms var(--ease-spring),
+      box-shadow 300ms var(--ease-spring),
+      border-color 200ms ease;
+  }
+  @media (hover: hover) {
+    .card-lift:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: var(--shadow-forest-lg), var(--glow-gold);
+    }
+  }
+  .card-lift:active {
+    transform: translateY(-1px) scale(1.006);
+    box-shadow: var(--shadow-forest-md), var(--glow-gold);
+  }
+  .card-lift:focus-within {
+    box-shadow: var(--shadow-forest-md), var(--glow-gold);
+  }
+
+  /* Panneau statique (non cliquable) : ombre teintée douce. */
+  .panel-forest {
+    box-shadow: var(--shadow-forest-md);
+  }
+
+  /* Apparition au scroll : état initial masqué + décalage vertical,
+     révélé via .is-visible (posé par le composant Reveal / IO natif). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 380ms ease-out,
+      transform 380ms var(--ease-spring);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lumora-sheen {
+  from {
+    transform: translateX(-250%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(400%) skewX(-18deg);
+  }
+}
+
+/* Respiration lente du rétroéclairage du hero (plaque "vivante"). */
+@keyframes lumora-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* ------------------------------------------------------------
+   Accessibilité : respect de prefers-reduced-motion.
+   Les apparitions deviennent instantanées, les transformations et le
+   sheen sont neutralisés (on garde un simple changement d'ombre).
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .card-lift {
+    transition: box-shadow 150ms ease;
+  }
+  .card-lift:hover,
+  .card-lift:active {
+    transform: none;
+  }
+  .btn-gold::after {
+    display: none;
+  }
+  .home-hero-glow {
+    animation: none;
+    opacity: 0.85;
   }
 }

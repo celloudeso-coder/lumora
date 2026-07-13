@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { LeafMark } from "@/components/brand/Logo";
 import { Section } from "@/components/ui/Section";
+import { Reveal } from "@/components/ui/Reveal";
+import { HomeHero } from "@/components/home/HomeHero";
 import { ACTIVITIES, VALUES } from "@/lib/activities";
-import { SITE } from "@/lib/site";
 
 export default function HomePage() {
   const subBrands = ACTIVITIES.filter((a) => a.isSubBrand);
@@ -11,31 +11,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="bg-forest text-cream">
-        <div className="mx-auto flex max-w-6xl flex-col items-center px-4 py-16 text-center lg:px-6 lg:py-24">
-          <LeafMark className="h-16 w-16 text-cream" />
-          <h1 className="mt-6 font-display text-4xl font-semibold tracking-[0.12em] sm:text-5xl lg:text-6xl">
-            LUMORA <span className="text-gold">GROUP</span>
-          </h1>
-          <p className="mt-3 text-sm uppercase tracking-[0.35em] text-gold">
-            {SITE.slogan}
-          </p>
-          <p className="mt-6 max-w-2xl font-light leading-relaxed text-cream/85 lg:text-lg">
-            Sept univers réunis sous une même exigence de qualité, à Conakry :
-            construire, savourer, se renforcer, prendre soin de soi et de son
-            quotidien.
-          </p>
-          <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <a href="#activites" className="btn-gold">
-              Découvrir nos activités
-            </a>
-            <Link href="/contact" className="btn bg-transparent border border-cream/40 text-cream hover:bg-cream/10">
-              Nous contacter
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
 
       {/* Les 5 sous-marques */}
       <Section
@@ -43,21 +19,21 @@ export default function HomePage() {
         title="Nos univers"
         intro="Cinq sous-marques portées par une même identité, et deux espaces à découvrir sur place."
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Reveal className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {subBrands.map((a) => (
             <ActivityCard key={a.slug} activity={a} />
           ))}
-        </div>
+        </Reveal>
 
         <h3 className="mt-12 font-display text-2xl font-semibold text-forest">
           Nos espaces
         </h3>
         <div className="mt-2 h-px w-12 bg-gold" />
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <Reveal className="mt-6 grid gap-4 sm:grid-cols-2">
           {independents.map((a) => (
             <ActivityCard key={a.slug} activity={a} />
           ))}
-        </div>
+        </Reveal>
       </Section>
 
       {/* Valeurs */}
@@ -67,18 +43,18 @@ export default function HomePage() {
             Nos valeurs
           </h2>
           <div className="mx-auto mt-3 h-px w-16 bg-gold" />
-          <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <Reveal className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {VALUES.map((v) => (
-              <li
+              <div
                 key={v}
-                className="rounded-xl border border-gold/25 px-4 py-5 text-center"
+                className="edge-gold rounded-xl border border-gold/25 px-4 py-5 text-center"
               >
                 <span className="text-sm uppercase tracking-[0.2em] text-gold">
                   {v}
                 </span>
-              </li>
+              </div>
             ))}
-          </ul>
+          </Reveal>
         </div>
       </section>
     </>
@@ -94,7 +70,7 @@ function ActivityCard({
   return (
     <Link
       href={`/${activity.slug}`}
-      className="group flex flex-col rounded-2xl border border-gold/30 bg-cream-50 p-5 transition-colors active:bg-gold-100 lg:hover:border-gold"
+      className="card-lift edge-gold group flex flex-col rounded-2xl border border-gold/30 bg-cream-50 p-5 lg:hover:border-gold"
     >
       <div className="flex items-center gap-3">
         <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest text-gold">

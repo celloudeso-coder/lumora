@@ -9,7 +9,26 @@
       "Read(//home/clvx/.npm/_logs/**)",
       "Bash(grep -m3 -B1 -A6 \"npm error\" /home/clvx/.npm/_logs/2026-07-12T18_44_04_601Z-debug-0.log | head -30)",
       "Bash(tail -25 /home/clvx/.npm/_logs/2026-07-12T18_44_04_601Z-debug-0.log)",
-      "Bash(echo \"exit=$?\")"
+      "Bash(echo \"exit=$?\")",
+      "Bash(git -C /home/clvx/Documents/LYNXADocuments/lumora log --oneline -5)",
+      "Bash(git -C /home/clvx/Documents/LYNXADocuments/lumora status --short)",
+      "Bash(node -e \"console.log\\(require\\('/home/clvx/Documents/LYNXADocuments/lumora/node_modules/lucide-react/package.json'\\).version\\)\")",
+      "Bash(echo \"=== tsc exit: $? ===\")",
+      "Bash(docker info *)",
+      "Bash(supabase init *)",
+      "Bash(supabase start *)",
+      "Bash(node -e \"console.log\\('zod', require\\('./node_modules/zod/package.json'\\).version\\); console.log\\('supabase-js', require\\('./node_modules/@supabase/supabase-js/package.json'\\).version\\)\")",
+      "Bash(sed -i 's/^port = 54321$/port = 54351/; s/^port = 54322$/port = 54352/; s/^shadow_port = 54320$/shadow_port = 54350/; s/^port = 54329$/port = 54359/; s/^port = 54323$/port = 54353/; s/^port = 54324$/port = 54354/; s/^port = 54327$/port = 54357/' supabase/config.toml)",
+      "Bash(supabase db *)",
+      "Bash(sed -i 's#className=\"rounded-2xl border border-gold/30 bg-cream-50 p-5\"#className=\"edge-gold panel-forest rounded-2xl border border-gold/30 bg-cream-50 p-5\"#' src/app/boutique/page.tsx src/app/pressing/page.tsx src/app/construction/page.tsx)",
+      "Bash(sed -i 's#className=\"group flex flex-col rounded-2xl border border-gold/30 bg-cream-50 p-5 transition-colors active:bg-gold-100 lg:hover:border-gold\"#className=\"card-lift edge-gold group flex flex-col rounded-2xl border border-gold/30 bg-cream-50 p-5 lg:hover:border-gold\"#' src/app/pilates/actualites/page.tsx)",
+      "Bash(curl -sI http://localhost:3001/)",
+      "Bash(node -e \"try{require.resolve\\('puppeteer'\\);console.log\\('puppeteer OK'\\)}catch{console.log\\('no puppeteer'\\)}\")",
+      "Bash(grep -E \"Compiled|Failed|error|Error|✓|✗|Route|/$|warn\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 4 http://localhost:3000/)",
+      "Bash(node -e \"const s=require\\('sharp'\\); console.log\\('sharp', s.versions?.sharp || require\\('sharp/package.json'\\).version\\)\")",
+      "Bash(node scripts/build-emblem.mjs)",
+      "Bash(python3 -c \"import urllib.parse;print\\(urllib.parse.quote\\('/images/logo/emblem-circle.png',safe=''\\)\\)\")"
     ],
     "additionalDirectories": [
       "/tmp/claude-1000/-home-clvx-Documents-LYNXADocuments-lumora/45385276-4319-4beb-9062-05fa574668d8/scratchpad/keep/.claude"

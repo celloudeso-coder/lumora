@@ -13,7 +13,7 @@ export function PageHero({
   icon?: LucideIcon;
 }) {
   return (
-    <section className="bg-forest text-cream">
+    <section className="hero-glow bg-forest text-cream">
       <div className="mx-auto max-w-6xl px-4 py-12 lg:px-6 lg:py-20">
         {Icon && (
           <span className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-full border border-gold/50 text-gold">
