@@ -55,7 +55,8 @@ export function Logo({
   return (
     <Link
       href="/"
-      className={`inline-flex items-center ${className ?? ""}`}
+      className={`inline-flex shrink-0 items-center overflow-hidden rounded-full ${className ?? ""}`}
+      style={{ height, width: height }}
       aria-label="LUMORA GROUP — Accueil"
     >
       <Image
@@ -63,7 +64,7 @@ export function Logo({
         alt="LUMORA GROUP"
         sizes={`${height}px`}
         style={{ height, width: height }}
-        className="object-contain"
+        className="scale-[1.42] object-contain"
         priority={priority}
       />
     </Link>

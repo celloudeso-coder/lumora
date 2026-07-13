@@ -63,7 +63,7 @@ export function Header() {
   return (
     <header className={`site-header glass-cream edge-gold sticky top-0 z-50 border-b border-gold/25 ${scrolled ? "is-scrolled" : ""}`}>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 transition-[height] duration-300 lg:px-6">
-        <Logo height={48} priority className="transition-transform duration-300 hover:scale-105" />
+        <Logo height={52} priority className="transition-transform duration-300 hover:scale-105" />
 
         {/* Navigation desktop */}
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigation principale">

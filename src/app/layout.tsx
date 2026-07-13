@@ -24,6 +24,14 @@ export const metadata: Metadata = {
   },
   description:
     "LUMORA GROUP à Conakry : construction, café, Pilates, pressing, institut de beauté Beleza, boutique et showroom. Qualité, confiance, excellence.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "64x64" },
+      { url: "/images/logo/favicon.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/images/logo/favicon.png", sizes: "512x512", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
