@@ -5,6 +5,8 @@ import { Section } from "@/components/ui/Section";
 import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { getActivity } from "@/lib/activities";
+import { getVisibleConstructionProjects } from "@/lib/data/construction-projects";
+import { ProjectGallery } from "@/components/construction/ProjectGallery";
 
 export const metadata: Metadata = {
   title: "Lumora Construction — BTP à Conakry",
@@ -42,8 +44,9 @@ const STEPS = [
   { n: "4", title: "Réalisation", text: "Nos équipes exécutent les travaux dans les délais convenus." },
 ];
 
-export default function ConstructionPage() {
+export default async function ConstructionPage() {
   const activity = getActivity("construction")!;
+  const projects = await getVisibleConstructionProjects();
 
   return (
     <>
@@ -74,7 +77,17 @@ export default function ConstructionPage() {
         </div>
       </Section>
 
-      <Section pageSlug="construction" sectionKey="processus" title="Comment ça se passe" tone="light">
+      <Section
+        pageSlug="construction"
+        sectionKey="realisations"
+        title="Nos réalisations"
+        intro="Découvrez une sélection de projets de construction, de rénovation et d’aménagement réalisés par nos équipes."
+        tone="light"
+      >
+        <ProjectGallery projects={projects} />
+      </Section>
+
+      <Section pageSlug="construction" sectionKey="processus" title="Comment ça se passe">
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((step) => (
             <li key={step.n} className="process-card edge-gold rounded-2xl bg-forest p-5 text-cream">

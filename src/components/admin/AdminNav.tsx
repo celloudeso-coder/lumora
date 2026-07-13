@@ -8,6 +8,7 @@ import {
   ClipboardList,
   FileText,
   House,
+  Building2,
   Menu,
   MessageSquareText,
   Newspaper,
@@ -28,6 +29,7 @@ const GROUPS: { label: string; items: AdminItem[] }[] = [
     label: "Contenu",
     items: [
       { href: "/admin/pages", label: "Pages", icon: FileText },
+      { href: "/admin/realisations", label: "Réalisations", icon: Building2 },
       { href: "/admin/tarifs", label: "Tarifs", icon: Tags },
       { href: "/admin/articles", label: "Articles", icon: Newspaper },
     ],

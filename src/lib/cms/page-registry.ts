@@ -58,7 +58,7 @@ export const EDITABLE_PAGES: EditablePage[] = [
     {
       slug: "construction", title: "Lumora Construction", href: "/construction", description: "Prestations BTP et demandes de devis.",
       sections: [
-        ["hero", "En-tête"], ["prestations", "Nos prestations"], ["processus", "Comment ça se passe"], ["devis", "Demander un devis gratuit"],
+        ["hero", "En-tête"], ["prestations", "Nos prestations"], ["realisations", "Nos réalisations"], ["processus", "Comment ça se passe"], ["devis", "Demander un devis gratuit"],
       ],
     },
     {

@@ -134,6 +134,10 @@ la page de connexion.
   Les personnalisations vivent dans `pricing_overrides` et les montants du code
   restent disponibles comme valeurs par défaut. De nouvelles lignes peuvent
   être ajoutées aux catégories tarifaires existantes puis supprimées
+- ✅ **Réalisations Construction administrables** : la page Construction
+  affiche les projets visibles et `Admin > Contenu > Réalisations` permet de
+  les ajouter, modifier, ordonner, masquer ou supprimer avec leur photo. Les
+  images sont stockées dans le bucket Supabase `project-images`
 - ⏳ À venir : création/édition des articles, gestion des statuts, création des
   créneaux, upload d'images, puis déploiement Vercel + Supabase cloud
 

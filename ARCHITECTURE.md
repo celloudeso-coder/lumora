@@ -148,6 +148,9 @@ Admin (protégé, dynamique, mobile-first avec barre de navigation basse)
 /admin/tarifs            Vue des grilles Café, Pilates et Pressing
 /admin/tarifs/[activity]/nouveau  Ajout d'une ligne tarifaire
 /admin/tarifs/[activity]/[itemKey]  Édition d'un tarif et retour au défaut
+/admin/realisations       Projets de la page Lumora Construction
+/admin/realisations/nouveau  Ajout avec téléversement d'une photo
+/admin/realisations/[id]  Modification, publication ou suppression
 /admin/articles          Liste + créer/éditer/publier/dépublier
 /admin/articles/nouveau
 /admin/articles/[id]
