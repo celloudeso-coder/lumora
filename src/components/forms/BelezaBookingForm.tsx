@@ -23,7 +23,7 @@ export function BelezaBookingForm({ services }: { services: string[] }) {
   }
 
   return (
-    <form action={formAction} className="relative space-y-5">
+    <form action={formAction} className="form-shell relative space-y-5">
       <Honeypot />
 
       <Field label="Soin souhaité" required>

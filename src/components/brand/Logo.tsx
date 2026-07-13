@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { LOGO_PHOTO } from "@/lib/images";
+import logo from "../../../public/images/logo/Logo.png";
 
 /**
  * Version plate (feuille de thé cerclée d'or) — icône compacte réutilisée
@@ -38,10 +38,9 @@ export function LeafMark({ className }: { className?: string }) {
 }
 
 /**
- * Logo officiel (plaque acrylique, PNG réel) utilisé dans le header et le
- * footer. `height` pilote la taille rendue ; l'image est servie via
- * next/image (WebP/AVIF, transparence préservée). Le prop `tone` est
- * conservé pour compat mais n'affecte plus les couleurs (le PNG les porte).
+ * Logo officiel utilisé dans le header et le footer. `height` pilote la
+ * taille rendue ; l'import statique permet à Next.js de conserver le ratio
+ * carré du fichier et de générer les variantes optimisées.
  */
 export function Logo({
   height = 44,
@@ -53,9 +52,6 @@ export function Logo({
   priority?: boolean;
   className?: string;
 }) {
-  // Largeur d'affichage dérivée du ratio réel du fichier (2194 × 1920).
-  const width = Math.round((height * 2194) / 1920);
-
   return (
     <Link
       href="/"
@@ -63,14 +59,10 @@ export function Logo({
       aria-label="LUMORA GROUP — Accueil"
     >
       <Image
-        src={LOGO_PHOTO.src}
+        src={logo}
         alt="LUMORA GROUP"
-        width={2194}
-        height={1920}
-        // Variante ≥ 256px (transparente) même en petit affichage : la
-        // variante 384px de l'optimiseur perd l'alpha.
-        sizes="256px"
-        style={{ height, width }}
+        sizes={`${height}px`}
+        style={{ height, width: height }}
         className="object-contain"
         priority={priority}
       />

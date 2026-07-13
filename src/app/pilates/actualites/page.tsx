@@ -20,13 +20,14 @@ export default async function ActualitesPage() {
   return (
     <>
       <PageHero
+        pageSlug="actualites-pilates"
         title="Actualités du studio"
         tagline={activity.tagline}
         description="Suivez la vie de Lumora Pilates : nouveaux cours, conseils de votre coach, événements et offres du moment."
         icon={activity.icon}
       />
 
-      <Section>
+      <Section pageSlug="actualites-pilates" sectionKey="liste">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {articles.map((article) => (
             <Link

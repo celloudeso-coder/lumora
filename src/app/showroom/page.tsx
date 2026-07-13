@@ -30,6 +30,7 @@ export default function ShowroomPage() {
   return (
     <>
       <PageHero
+        pageSlug="showroom"
         title={activity.name}
         tagline={activity.tagline}
         description="Voyez et touchez les matériaux avant de choisir. Notre showroom expose une sélection de finitions et d'échantillons pour vos projets — l'équipe vous conseille et établit votre devis sur place."
@@ -37,13 +38,15 @@ export default function ShowroomPage() {
       />
 
       <Section
+        pageSlug="showroom"
+        sectionKey="galerie"
         title="Le showroom en images"
         intro="Sanitaires, matériaux et échantillons exposés dans nos locaux."
       >
         <Gallery images={GALLERIES.showroom} columns={3} />
       </Section>
 
-      <Section title="Nos espaces d'exposition" tone="light">
+      <Section pageSlug="showroom" sectionKey="espaces" title="Nos espaces d'exposition" tone="light">
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
           {SPACES.map((s) => (
             <div
@@ -80,6 +83,8 @@ export default function ShowroomPage() {
       </Section>
 
       <Section
+        pageSlug="showroom"
+        sectionKey="devis"
         title="Demander un devis"
         intro="Décrivez ce qui vous intéresse (matériaux, quantités, projet) : nous préparons votre devis et vous recontactons."
       >

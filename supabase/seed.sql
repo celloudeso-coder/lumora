@@ -87,14 +87,16 @@ begin
 
     insert into auth.users (
       instance_id, id, aud, role, email, encrypted_password,
-      email_confirmed_at, raw_app_meta_data, raw_user_meta_data,
+      email_confirmed_at, confirmation_token, recovery_token,
+      email_change_token_new, email_change, raw_app_meta_data, raw_user_meta_data,
       created_at, updated_at
     )
     values (
       '00000000-0000-0000-0000-000000000000', uid, 'authenticated',
       'authenticated', u.email,
       extensions.crypt(u.password, extensions.gen_salt('bf')),
-      now(), '{"provider":"email","providers":["email"]}'::jsonb,
+      now(), '', '', '', '',
+      '{"provider":"email","providers":["email"]}'::jsonb,
       jsonb_build_object('full_name', u.full_name), now(), now()
     );
 

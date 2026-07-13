@@ -48,6 +48,7 @@ export default function BelezaPage() {
   return (
     <>
       <PageHero
+        pageSlug="beleza-beauty"
         title={activity.name}
         tagline={activity.tagline}
         description="Offrez-vous une parenthèse de douceur. Nos esthéticiennes vous accueillent sur rendez-vous pour des soins personnalisés, dans une ambiance feutrée."
@@ -55,6 +56,8 @@ export default function BelezaPage() {
       />
 
       <Section
+        pageSlug="beleza-beauty"
+        sectionKey="galerie"
         title="L'institut en images"
         intro="Nos salles de massage et de soin, pensées pour la détente."
       >
@@ -62,6 +65,8 @@ export default function BelezaPage() {
       </Section>
 
       <Section
+        pageSlug="beleza-beauty"
+        sectionKey="soins"
         title="Nos soins"
         intro="Carte provisoire — durées et tarifs confirmés à la prise de rendez-vous."
       >
@@ -94,6 +99,8 @@ export default function BelezaPage() {
       </Section>
 
       <Section
+        pageSlug="beleza-beauty"
+        sectionKey="reservation"
         title="Prendre rendez-vous"
         intro="Indiquez le soin et le moment qui vous conviennent : nous confirmons l'horaire par téléphone ou WhatsApp."
         tone="light"

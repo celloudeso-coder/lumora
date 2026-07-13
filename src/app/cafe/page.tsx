@@ -22,6 +22,7 @@ export default function CafePage() {
   return (
     <>
       <PageHero
+        pageSlug="cafe"
         title={activity.name}
         tagline={activity.tagline}
         description="Un écrin chaleureux pour vos pauses café, vos rendez-vous et vos moments de détente. Tous nos prix sont fixes et affichés — pas de surprise."
@@ -29,6 +30,8 @@ export default function CafePage() {
       />
 
       <Section
+        pageSlug="cafe"
+        sectionKey="galerie"
         title="Le café en images"
         intro="La salle, la décoration et notre machine à café professionnelle Caffè Moreno."
       >
@@ -36,6 +39,8 @@ export default function CafePage() {
       </Section>
 
       <Section
+        pageSlug="cafe"
+        sectionKey="menu"
         title="Notre menu"
         intro="Prix en francs guinéens (GNF), en formats Petit / Moyen / Grand selon les boissons."
         tone="light"
@@ -47,7 +52,7 @@ export default function CafePage() {
         </div>
       </Section>
 
-      <Section title="Infos pratiques">
+      <Section pageSlug="cafe" sectionKey="infos" title="Infos pratiques">
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="flex items-start gap-4">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest text-gold">

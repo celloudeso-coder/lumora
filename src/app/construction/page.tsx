@@ -47,13 +47,14 @@ export default function ConstructionPage() {
   return (
     <>
       <PageHero
+        pageSlug="construction"
         title={activity.name}
         tagline={activity.tagline}
         description="Bâtir l'avenir, un projet à la fois. Lumora Construction accompagne particuliers et entreprises de Conakry dans leurs projets de construction, de rénovation et d'approvisionnement en matériaux."
         icon={activity.icon}
       />
 
-      <Section title="Nos prestations">
+      <Section pageSlug="construction" sectionKey="prestations" title="Nos prestations">
         <div className="grid gap-4 sm:grid-cols-2">
           {SERVICES.map((s) => (
             <div
@@ -72,10 +73,10 @@ export default function ConstructionPage() {
         </div>
       </Section>
 
-      <Section title="Comment ça se passe" tone="light">
+      <Section pageSlug="construction" sectionKey="processus" title="Comment ça se passe" tone="light">
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((step) => (
-            <li key={step.n} className="rounded-2xl bg-forest p-5 text-cream">
+            <li key={step.n} className="process-card edge-gold rounded-2xl bg-forest p-5 text-cream">
               <span className="font-display text-3xl font-semibold text-gold">
                 {step.n}
               </span>
@@ -91,6 +92,8 @@ export default function ConstructionPage() {
       </Section>
 
       <Section
+        pageSlug="construction"
+        sectionKey="devis"
         title="Demander un devis gratuit"
         intro="Remplissez ce formulaire, notre équipe vous recontacte sous 48h pour étudier votre projet."
       >

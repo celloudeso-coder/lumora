@@ -47,13 +47,14 @@ export default function PressingPage() {
   return (
     <>
       <PageHero
+        pageSlug="pressing"
         title={activity.name}
         tagline={activity.tagline}
         description="Confiez-nous vos vêtements et votre linge de maison : nettoyage, repassage et soin du détail, avec des tarifs clairs et des délais respectés."
         icon={activity.icon}
       />
 
-      <Section title="Nos engagements">
+      <Section pageSlug="pressing" sectionKey="engagements" title="Nos engagements">
         <div className="grid gap-4 sm:grid-cols-3">
           {COMMITMENTS.map((c) => (
             <div
@@ -73,11 +74,13 @@ export default function PressingPage() {
       </Section>
 
       <Section
+        pageSlug="pressing"
+        sectionKey="tarifs"
         title="Tarifs indicatifs"
         intro="Tarifs provisoires, confirmés au dépôt selon la matière et l'état de l'article."
         tone="light"
       >
-        <ul className="max-w-xl divide-y divide-gold/20 rounded-2xl border border-gold/30 bg-white px-5">
+        <ul className="panel-forest max-w-xl divide-y divide-gold/20 rounded-2xl border border-gold/30 bg-white px-5">
           {PRICES.map((p) => (
             <li
               key={p.item}
@@ -93,6 +96,8 @@ export default function PressingPage() {
       </Section>
 
       <Section
+        pageSlug="pressing"
+        sectionKey="contact"
         title="Une question, un besoin particulier ?"
         intro="Grande quantité, textile délicat, entreprise ou hôtel : écrivez-nous, nous vous répondons rapidement."
       >

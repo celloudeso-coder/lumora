@@ -30,7 +30,7 @@ export function LeadForm({
   }
 
   return (
-    <form action={formAction} className="relative space-y-5">
+    <form action={formAction} className="form-shell relative space-y-5">
       <input type="hidden" name="activity" value={activity} />
       <Honeypot />
 

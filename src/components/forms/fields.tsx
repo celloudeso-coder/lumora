@@ -22,7 +22,7 @@ export function Field({
 }
 
 export const inputClass =
-  "w-full min-h-12 rounded-xl border border-forest/20 bg-white px-4 text-base text-forest placeholder:text-forest/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40";
+  "form-control w-full min-h-12 rounded-xl border border-forest/20 bg-white px-4 text-base text-forest placeholder:text-forest/40 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30";
 
 export const textareaClass = `${inputClass} py-3 min-h-28 resize-y`;
 

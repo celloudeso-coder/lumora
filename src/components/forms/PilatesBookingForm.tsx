@@ -41,7 +41,7 @@ export function PilatesBookingForm({ slots }: { slots: ClassSlot[] }) {
   };
 
   return (
-    <form action={formAction} className="relative space-y-6">
+    <form action={formAction} className="form-shell relative space-y-6">
       <Honeypot />
 
       {/* Étape 1 : format de cours */}
@@ -56,7 +56,7 @@ export function PilatesBookingForm({ slots }: { slots: ClassSlot[] }) {
             return (
               <label
                 key={o.format}
-                className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
+                className={`choice-card flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 ${
                   selected ? "border-gold bg-gold-100" : "border-forest/15 bg-white"
                 }`}
               >
@@ -88,7 +88,7 @@ export function PilatesBookingForm({ slots }: { slots: ClassSlot[] }) {
               return (
                 <label
                   key={f.id}
-                  className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
+                  className={`choice-card flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 ${
                     selected
                       ? "border-gold bg-gold-100"
                       : "border-forest/15 bg-white"
@@ -138,7 +138,7 @@ export function PilatesBookingForm({ slots }: { slots: ClassSlot[] }) {
                 return (
                   <label
                     key={slot.id}
-                    className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
+                    className={`choice-card flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 ${
                       selected
                         ? "border-gold bg-gold-100"
                         : "border-forest/15 bg-white"

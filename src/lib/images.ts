@@ -10,6 +10,7 @@ import type { GalleryImage } from "@/components/ui/Gallery";
 export const FACADE_PHOTO: GalleryImage = {
   src: "/images/facade/facade-nuit.jpg",
   alt: "La façade de LUMORA GROUP illuminée de nuit, avec son enseigne Lumora",
+  aspect: "portrait",
 };
 
 /** Logo officiel : rendu 3D de la plaque acrylique rétroéclairée. */
@@ -24,33 +25,36 @@ export const LOGO_PHOTO: GalleryImage = {
 
 export const GALLERIES = {
   cafe: [
-    { src: "/images/cafe/salle.jpg", alt: "La salle du Lumora Café" },
-    { src: "/images/cafe/decoration.jpg", alt: "Décoration et ambiance du café" },
-    { src: "/images/cafe/plats.jpg", alt: "Douceurs et plats servis au café" },
+    { src: "/images/cafe/salle.jpg", alt: "La salle du Lumora Café", aspect: "portrait" },
+    { src: "/images/cafe/decoration.jpg", alt: "Décoration et ambiance du café", aspect: "portrait" },
+    { src: "/images/cafe/plats.jpg", alt: "Douceurs et plats servis au café", aspect: "portrait" },
     {
       src: "/images/cafe/machine-caffe-moreno.jpg",
       alt: "La machine à café professionnelle Caffè Moreno",
+      aspect: "portrait",
     },
   ],
   pilates: [
-    { src: "/images/pilates/studio.jpg", alt: "Le studio Lumora Pilates" },
+    { src: "/images/pilates/studio.jpg", alt: "Le studio Lumora Pilates", aspect: "portrait" },
     {
       src: "/images/pilates/reformers.jpg",
       alt: "Les appareils Reformer Fat-Plate du studio",
+      aspect: "portrait",
     },
-    { src: "/images/pilates/decor.jpg", alt: "Décor et ambiance du studio" },
+    { src: "/images/pilates/decor.jpg", alt: "Décor et ambiance du studio", aspect: "portrait" },
   ],
   beleza: [
     {
       src: "/images/beleza/salle-massage.jpg",
       alt: "La salle de massage de l'institut Beleza Beauty",
+      aspect: "portrait",
     },
-    { src: "/images/beleza/tables-soin.jpg", alt: "Les tables de soin de l'institut" },
-    { src: "/images/beleza/ambiance.jpg", alt: "L'ambiance apaisante de l'institut" },
+    { src: "/images/beleza/tables-soin.jpg", alt: "Les tables de soin de l'institut", aspect: "portrait" },
+    { src: "/images/beleza/ambiance.jpg", alt: "L'ambiance apaisante de l'institut", aspect: "portrait" },
   ],
   showroom: [
-    { src: "/images/showroom/sanitaires.jpg", alt: "Sanitaires exposés au showroom" },
-    { src: "/images/showroom/exposition.jpg", alt: "L'espace d'exposition du showroom" },
-    { src: "/images/showroom/stock.jpg", alt: "Le stock de matériel du showroom" },
+    { src: "/images/showroom/sanitaires.jpg", alt: "Sanitaires exposés au showroom", aspect: "portrait" },
+    { src: "/images/showroom/exposition.jpg", alt: "L'espace d'exposition du showroom", aspect: "portrait" },
+    { src: "/images/showroom/stock.jpg", alt: "Le stock de matériel du showroom", aspect: "portrait" },
   ],
 } satisfies Record<string, GalleryImage[]>;

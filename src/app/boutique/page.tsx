@@ -43,6 +43,7 @@ export default function BoutiquePage() {
   return (
     <>
       <PageHero
+        pageSlug="boutique"
         title={activity.name}
         tagline={activity.tagline}
         description="Notre boutique vous accueille à Conakry avec une sélection de produits fidèle à l'exigence LUMORA : qualité, élégance et utilité au quotidien."
@@ -50,6 +51,8 @@ export default function BoutiquePage() {
       />
 
       <Section
+        pageSlug="boutique"
+        sectionKey="rayons"
         title="Nos rayons"
         intro="Assortiment provisoire — le catalogue détaillé sera présenté en boutique."
       >
@@ -70,12 +73,12 @@ export default function BoutiquePage() {
         </div>
       </Section>
 
-      <Section title="Moyens de paiement" tone="light">
+      <Section pageSlug="boutique" sectionKey="paiements" title="Moyens de paiement" tone="light">
         <ul className="flex flex-wrap gap-3">
           {PAYMENTS.map((p) => (
             <li
               key={p.label}
-              className="flex min-h-12 items-center gap-2.5 rounded-full border border-gold/40 bg-white px-5 text-sm font-medium text-forest"
+              className="payment-chip flex min-h-12 items-center gap-2.5 rounded-full border border-gold/40 bg-white px-5 text-sm font-medium text-forest"
             >
               <p.icon className="h-5 w-5 text-gold-600" />
               {p.label}
@@ -85,6 +88,8 @@ export default function BoutiquePage() {
       </Section>
 
       <Section
+        pageSlug="boutique"
+        sectionKey="demande"
         title="Une demande particulière ?"
         intro="Disponibilité d'un produit, commande spéciale, achat en quantité : écrivez-nous."
       >

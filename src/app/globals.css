@@ -54,10 +54,31 @@
   --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
 body {
-  background: var(--color-cream);
+  background:
+    radial-gradient(circle at 8% 14%, rgba(201, 163, 92, 0.07), transparent 24rem),
+    var(--color-cream);
   color: var(--color-forest);
   font-family: var(--font-body);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+/* Le back-office possède sa propre navigation et son propre pied de page. */
+body:has(.admin-root) > header,
+body:has(.admin-root) > footer,
+body:has(.admin-root) > .public-floating-actions {
+  display: none;
+}
+
+::selection {
+  background: var(--color-gold-300);
+  color: var(--color-forest-950);
 }
 
 h1,
@@ -75,6 +96,11 @@ h3 {
   textarea {
     touch-action: manipulation;
   }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
 }
 
 /* Boutons de marque réutilisables.
@@ -85,7 +111,7 @@ h3 {
   .btn-primary,
   .btn-gold,
   .btn-outline {
-    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium tracking-wide transition-colors;
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium tracking-wide transition-all duration-300;
   }
   .btn-primary {
     @apply bg-forest text-cream hover:bg-forest-600 active:bg-forest-800;
@@ -95,6 +121,13 @@ h3 {
   }
   .btn-outline {
     @apply border border-gold text-forest hover:bg-gold-100;
+  }
+
+  .btn:active,
+  .btn-primary:active,
+  .btn-gold:active,
+  .btn-outline:active {
+    transform: scale(0.98);
   }
 
   /* Relief au repos sur le bouton doré : il paraît "posé", pas plat. */
@@ -154,6 +187,52 @@ h3 {
    Utilitaires Lumora Glass (réutilisables, pas de duplication page)
    ------------------------------------------------------------ */
 @layer components {
+  .skip-link {
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    transform: translateY(-200%);
+    border-radius: 999px;
+    background: var(--color-gold);
+    color: var(--color-forest-950);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: transform 180ms ease;
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .site-header {
+    box-shadow: var(--shadow-forest-sm);
+    transition:
+      background-color 250ms ease,
+      box-shadow 250ms ease;
+  }
+  .site-header.is-scrolled {
+    background: rgba(245, 240, 232, 0.94);
+    box-shadow: var(--shadow-forest-md);
+  }
+  .scroll-progress {
+    transition: transform 80ms linear;
+  }
+  .mobile-nav {
+    animation: mobile-nav-in 320ms var(--ease-spring) both;
+  }
+  .mobile-nav li {
+    animation: mobile-item-in 360ms var(--ease-spring) both;
+  }
+  .mobile-nav li:nth-child(2) { animation-delay: 25ms; }
+  .mobile-nav li:nth-child(3) { animation-delay: 50ms; }
+  .mobile-nav li:nth-child(4) { animation-delay: 75ms; }
+  .mobile-nav li:nth-child(5) { animation-delay: 100ms; }
+  .mobile-nav li:nth-child(6) { animation-delay: 125ms; }
+  .mobile-nav li:nth-child(7) { animation-delay: 150ms; }
+  .mobile-nav li:nth-child(8) { animation-delay: 175ms; }
+  .mobile-nav li:nth-child(9) { animation-delay: 200ms; }
+
   /* Verre teinté forêt : pour les surfaces sticky posées sur du contenu
      (backdrop-filter n'a d'effet que là où du contenu défile derrière). */
   .glass-forest {
@@ -216,6 +295,74 @@ h3 {
     pointer-events: none;
   }
 
+  .page-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      linear-gradient(115deg, rgba(12, 29, 21, 0.2), transparent 55%),
+      radial-gradient(90% 120% at 100% 0%, #2a5a44 0%, #1a3d2e 46%, #122a1f 100%);
+  }
+  .page-hero::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    opacity: 0.7;
+  }
+  .page-hero-orb {
+    position: absolute;
+    border: 1px solid rgba(201, 163, 92, 0.18);
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .page-hero-orb-one {
+    width: 24rem;
+    height: 24rem;
+    right: -8rem;
+    top: -13rem;
+  }
+  .page-hero-orb-two {
+    width: 14rem;
+    height: 14rem;
+    right: 7rem;
+    bottom: -10rem;
+  }
+  .page-hero-icon {
+    box-shadow: inset 0 0 20px rgba(201, 163, 92, 0.08), var(--glow-gold);
+    transform: rotate(-3deg);
+  }
+
+  .section-shell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .section-light::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: 26rem;
+    height: 26rem;
+    right: -18rem;
+    top: -14rem;
+    border: 1px solid rgba(201, 163, 92, 0.16);
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .section-rule {
+    width: 4rem;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-gold), rgba(201, 163, 92, 0.15));
+    transform-origin: left;
+    transition: width 500ms var(--ease-spring);
+  }
+  .section-heading.is-visible .section-rule {
+    width: 6rem;
+  }
+
   /* ----- Hero d'accueil : profondeur, texture, lumière vivante -----
      Scopé à .home-hero pour ne pas toucher les autres héros de page. */
   .home-hero {
@@ -230,19 +377,6 @@ h3 {
       #1f4736 32%,
       #143024 64%,
       #0b1b13 100%
-    );
-  }
-
-  /* Overlay dégradé forêt posé sur la photo de façade quand elle existe :
-     on devine la photo tout en gardant le texte parfaitement lisible. */
-  .home-hero-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(
-      178deg,
-      rgba(18, 42, 31, 0.82) 0%,
-      rgba(11, 27, 19, 0.93) 100%
     );
   }
 
@@ -262,6 +396,43 @@ h3 {
      contour dur (glow radial flou). */
   .home-emblem {
     position: relative;
+  }
+  .home-emblem > img {
+    animation: lumora-float 7s ease-in-out infinite;
+    filter: drop-shadow(0 24px 35px rgba(6, 18, 12, 0.28));
+  }
+  .home-hero-copy {
+    animation: hero-copy-in 720ms var(--ease-spring) both;
+  }
+  .home-visual {
+    animation: hero-visual-in 850ms 100ms var(--ease-spring) both;
+  }
+  .home-facade-card {
+    box-shadow:
+      0 28px 70px rgba(4, 15, 9, 0.42),
+      0 0 40px rgba(201, 163, 92, 0.14);
+    transform: rotate(1.2deg);
+    transition:
+      transform 500ms var(--ease-spring),
+      box-shadow 500ms ease;
+  }
+  .home-facade-card img {
+    transition: transform 900ms var(--ease-spring);
+  }
+  .home-logo-medallion {
+    animation: lumora-float 7s ease-in-out infinite;
+    filter: drop-shadow(0 18px 26px rgba(5, 17, 10, 0.42));
+  }
+  @media (hover: hover) {
+    .home-facade-card:hover {
+      transform: rotate(0deg) translateY(-4px);
+      box-shadow:
+        0 34px 80px rgba(4, 15, 9, 0.5),
+        var(--glow-gold);
+    }
+    .home-facade-card:hover img {
+      transform: scale(1.025);
+    }
   }
   .home-emblem::before {
     content: "";
@@ -317,9 +488,178 @@ h3 {
     box-shadow: var(--shadow-forest-md), var(--glow-gold);
   }
 
+  .card-lift .group-hover\:translate-x-1,
+  .card-lift svg {
+    transition: transform 250ms var(--ease-spring);
+  }
+  @media (hover: hover) {
+    a.card-lift:hover > span:last-child svg {
+      transform: translateX(0.25rem);
+    }
+  }
+
   /* Panneau statique (non cliquable) : ombre teintée douce. */
   .panel-forest {
     box-shadow: var(--shadow-forest-md);
+    transition:
+      transform 300ms var(--ease-spring),
+      box-shadow 300ms var(--ease-spring),
+      border-color 250ms ease;
+  }
+
+  .process-card {
+    box-shadow: var(--shadow-forest-md);
+    transition:
+      transform 300ms var(--ease-spring),
+      background-color 250ms ease,
+      box-shadow 300ms ease;
+  }
+  @media (hover: hover) {
+    .process-card:hover {
+      transform: translateY(-3px);
+      background: var(--color-forest-600);
+      box-shadow: var(--shadow-forest-lg), var(--glow-gold);
+    }
+  }
+
+  .payment-chip {
+    box-shadow: var(--shadow-forest-sm);
+    transition:
+      transform 250ms var(--ease-spring),
+      border-color 200ms ease,
+      box-shadow 250ms ease;
+  }
+  @media (hover: hover) {
+    .payment-chip:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-gold);
+      box-shadow: var(--shadow-forest-md);
+    }
+  }
+  @media (hover: hover) {
+    .panel-forest:hover {
+      transform: translateY(-2px);
+      border-color: rgba(201, 163, 92, 0.65);
+      box-shadow: var(--shadow-forest-lg);
+    }
+  }
+
+  .gallery-tile {
+    box-shadow: var(--shadow-forest-sm);
+    transition:
+      transform 350ms var(--ease-spring),
+      box-shadow 350ms var(--ease-spring);
+  }
+
+  /* Les photos des locaux sont verticales (9:16). Sur téléphone elles se
+     parcourent horizontalement, puis reprennent une grille régulière dès
+     que la largeur permet de les apprécier sans les recadrer. */
+  .portrait-gallery {
+    grid-auto-flow: column;
+    grid-auto-columns: min(82vw, 21rem);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gold) transparent;
+    padding: 0.25rem 0.15rem 0.85rem;
+  }
+  .portrait-gallery .gallery-tile {
+    scroll-snap-align: start;
+  }
+  @media (hover: none) {
+    .portrait-gallery .gallery-tile > div {
+      opacity: 1;
+    }
+  }
+  @media (min-width: 640px) {
+    .portrait-gallery {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow: visible;
+      padding: 0;
+    }
+  }
+  @media (min-width: 1024px) {
+    .portrait-gallery.portrait-columns-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .portrait-gallery.portrait-columns-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .portrait-gallery.portrait-columns-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (hover: hover) {
+    .gallery-tile:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-forest-lg);
+    }
+  }
+
+  .form-shell {
+    border: 1px solid rgba(201, 163, 92, 0.28);
+    border-radius: 1.5rem;
+    background: rgba(251, 248, 243, 0.78);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-forest-md);
+  }
+  @media (min-width: 640px) {
+    .form-shell {
+      padding: 1.75rem;
+    }
+  }
+  .form-control {
+    box-shadow: inset 0 1px 2px rgba(26, 61, 46, 0.04);
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
+  }
+  .form-control:hover {
+    border-color: rgba(201, 163, 92, 0.6);
+  }
+  .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(201, 163, 92, 0.18), var(--shadow-forest-sm);
+  }
+  .choice-card {
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease,
+      transform 220ms var(--ease-spring),
+      box-shadow 220ms ease;
+  }
+  @media (hover: hover) {
+    .choice-card:hover {
+      transform: translateY(-1px);
+      border-color: var(--color-gold);
+      box-shadow: var(--shadow-forest-sm);
+    }
+  }
+
+  .floating-action {
+    display: inline-flex;
+    min-height: 3rem;
+    min-width: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(201, 163, 92, 0.45);
+    border-radius: 999px;
+    padding: 0 0.85rem;
+    box-shadow: var(--shadow-forest-lg);
+    transition:
+      opacity 250ms ease,
+      transform 250ms var(--ease-spring),
+      box-shadow 250ms ease;
+  }
+  @media (hover: hover) {
+    .floating-action:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-forest-lg), var(--glow-gold);
+    }
   }
 
   /* Apparition au scroll : état initial masqué + décalage vertical,
@@ -359,12 +699,40 @@ h3 {
   }
 }
 
+@keyframes lumora-float {
+  0%, 100% { transform: translateY(0) rotate(-0.4deg); }
+  50% { transform: translateY(-9px) rotate(0.4deg); }
+}
+
+@keyframes mobile-nav-in {
+  from { opacity: 0; transform: translateY(-0.75rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mobile-item-in {
+  from { opacity: 0; transform: translateX(-0.75rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes hero-copy-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-visual-in {
+  from { opacity: 0; transform: translateX(1.25rem) scale(0.97); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
 /* ------------------------------------------------------------
    Accessibilité : respect de prefers-reduced-motion.
    Les apparitions deviennent instantanées, les transformations et le
    sheen sont neutralisés (on garde un simple changement d'ombre).
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   .reveal {
     opacity: 1 !important;
     transform: none !important;
@@ -383,5 +751,27 @@ h3 {
   .home-hero-glow {
     animation: none;
     opacity: 0.85;
+  }
+  .home-emblem > img,
+  .home-logo-medallion,
+  .home-hero-copy,
+  .home-visual,
+  .mobile-nav,
+  .mobile-nav li {
+    animation: none;
+  }
+  .panel-forest:hover,
+  .gallery-tile:hover,
+  .floating-action:hover,
+  .choice-card:hover {
+    transform: none;
+  }
+  .process-card:hover,
+  .payment-chip:hover {
+    transform: none;
+  }
+  .home-facade-card,
+  .home-facade-card:hover {
+    transform: none;
   }
 }

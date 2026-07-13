@@ -30,6 +30,7 @@ export default async function PilatesPage() {
   return (
     <>
       <PageHero
+        pageSlug="pilates"
         title={activity.name}
         tagline={activity.tagline}
         description="Renforcez votre corps, apaisez votre esprit. Des cours en petit groupe encadrés par une coach certifiée, dans un studio lumineux pensé pour votre bien-être."
@@ -37,6 +38,8 @@ export default async function PilatesPage() {
       />
 
       <Section
+        pageSlug="pilates"
+        sectionKey="galerie"
         title="Le studio en images"
         intro="Le studio Lumora Pilates et ses appareils Reformer."
       >
@@ -44,6 +47,8 @@ export default async function PilatesPage() {
       </Section>
 
       <Section
+        pageSlug="pilates"
+        sectionKey="offres"
         title="Nos offres — Lumora Studio"
         intro="Deux formats de cours, chacun en session unique ou en pack de 5 ou 10 séances. Prix en francs guinéens (GNF)."
         tone="light"
@@ -99,6 +104,8 @@ export default async function PilatesPage() {
       </Section>
 
       <Section
+        pageSlug="pilates"
+        sectionKey="reservation"
         title="Réserver un cours"
         intro="Choisissez votre format, votre formule puis un créneau de la semaine : la confirmation arrive par téléphone ou WhatsApp."
         id="reserver"
@@ -110,6 +117,8 @@ export default async function PilatesPage() {
 
       {/* Actualités du studio */}
       <Section
+        pageSlug="pilates"
+        sectionKey="actualites"
         title="Actualités du studio"
         intro="Nouveaux cours, conseils bien-être, événements et offres du moment."
         tone="light"

@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { FloatingActions } from "@/components/layout/FloatingActions";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -42,9 +43,13 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="flex min-h-full flex-col">
+        <a href="#contenu" className="skip-link">
+          Aller au contenu
+        </a>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="contenu" className="flex-1">{children}</main>
         <Footer />
+        <FloatingActions />
       </body>
     </html>
   );

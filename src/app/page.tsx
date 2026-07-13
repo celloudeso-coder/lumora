@@ -4,10 +4,12 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { HomeHero } from "@/components/home/HomeHero";
 import { ACTIVITIES, VALUES } from "@/lib/activities";
+import { resolvePageSection } from "@/lib/cms/page-sections";
 
-export default function HomePage() {
+export default async function HomePage() {
   const subBrands = ACTIVITIES.filter((a) => a.isSubBrand);
   const independents = ACTIVITIES.filter((a) => !a.isSubBrand);
+  const valuesSection = await resolvePageSection("accueil", "valeurs", { title: "Nos valeurs" });
 
   return (
     <>
@@ -15,6 +17,8 @@ export default function HomePage() {
 
       {/* Les 5 sous-marques */}
       <Section
+        pageSlug="accueil"
+        sectionKey="univers"
         id="activites"
         title="Nos univers"
         intro="Cinq sous-marques portées par une même identité, et deux espaces à découvrir sur place."
@@ -37,10 +41,10 @@ export default function HomePage() {
       </Section>
 
       {/* Valeurs */}
-      <section className="bg-forest-900 text-cream">
+      {valuesSection.isVisible && <section className="bg-forest-900 text-cream">
         <div className="mx-auto max-w-6xl px-4 py-12 lg:px-6 lg:py-16">
           <h2 className="text-center font-display text-3xl font-semibold">
-            Nos valeurs
+            {valuesSection.title}
           </h2>
           <div className="mx-auto mt-3 h-px w-16 bg-gold" />
           <Reveal className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -56,7 +60,7 @@ export default function HomePage() {
             ))}
           </Reveal>
         </div>
-      </section>
+      </section>}
     </>
   );
 }
