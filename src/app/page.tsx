@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { Reveal } from "@/components/ui/Reveal";
 import { HomeHero } from "@/components/home/HomeHero";
 import { ACTIVITIES, VALUES } from "@/lib/activities";
@@ -61,6 +62,7 @@ export default async function HomePage() {
           </Reveal>
         </div>
       </section>}
+      <AdditionalPageSections pageSlug="accueil" />
     </>
   );
 }

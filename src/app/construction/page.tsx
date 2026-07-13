@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Building2, Hammer, PackageSearch, ClipboardCheck } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { getActivity } from "@/lib/activities";
 
@@ -111,6 +112,7 @@ export default function ConstructionPage() {
           />
         </div>
       </Section>
+      <AdditionalPageSections pageSlug="construction" />
     </>
   );
 }

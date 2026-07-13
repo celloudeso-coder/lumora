@@ -3,8 +3,7 @@
 import { useActionState, useState } from "react";
 import type { ClassSlot } from "@/lib/data/slots";
 import { formatSlotDate } from "@/lib/data/slots";
-import type { CourseFormat } from "@/lib/data/pilates-pricing";
-import { PILATES_OFFERS, getOffer } from "@/lib/data/pilates-pricing";
+import type { CourseFormat, PilatesOffer } from "@/lib/data/pilates-pricing";
 import { formatGNF } from "@/lib/format";
 import { submitPilatesBooking } from "@/lib/actions/bookings";
 import { initialFormState } from "@/lib/actions/form-state";
@@ -16,7 +15,7 @@ import { Field, inputClass, SuccessNote, ErrorNote, Honeypot } from "./fields";
  * puis Server Action `submitPilatesBooking` → table `bookings`
  * (activity='pilates', slot_id).
  */
-export function PilatesBookingForm({ slots }: { slots: ClassSlot[] }) {
+export function PilatesBookingForm({ slots, offers }: { slots: ClassSlot[]; offers: PilatesOffer[] }) {
   const [state, formAction, pending] = useActionState(
     submitPilatesBooking,
     initialFormState,
@@ -31,7 +30,7 @@ export function PilatesBookingForm({ slots }: { slots: ClassSlot[] }) {
     );
   }
 
-  const offer = format ? getOffer(format) : null;
+  const offer = format ? offers.find((item) => item.format === format) ?? null : null;
   const formatSlots = format ? slots.filter((s) => s.format === format) : [];
 
   const selectFormat = (f: CourseFormat) => {
@@ -51,7 +50,7 @@ export function PilatesBookingForm({ slots }: { slots: ClassSlot[] }) {
           <span className="text-gold-600">*</span>
         </legend>
         <div className="grid gap-2 sm:grid-cols-2">
-          {PILATES_OFFERS.map((o) => {
+          {offers.map((o) => {
             const selected = format === o.format;
             return (
               <label

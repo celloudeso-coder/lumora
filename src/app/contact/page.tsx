@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { SITE } from "@/lib/site";
@@ -121,6 +122,7 @@ export default function ContactPage() {
           </div>
         </div>
       </Section>
+      <AdditionalPageSections pageSlug="contact" />
     </>
   );
 }

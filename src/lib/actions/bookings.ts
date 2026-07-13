@@ -6,7 +6,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/server";
-import { getOffer } from "@/lib/data/pilates-pricing";
+import { getPilatesOffers } from "@/lib/cms/pricing";
 import type { FormState } from "./form-state";
 
 const nameSchema = z.string().trim().min(2, "Indiquez votre nom complet.").max(120);
@@ -60,7 +60,11 @@ export async function submitPilatesBooking(
 
   const { format, formula: formulaId, slot: slotId, name, phone } = parsed.data;
 
-  const offer = getOffer(format);
+  const offers = await getPilatesOffers();
+  const offer = offers.find((item) => item.format === format);
+  if (!offer) {
+    return { status: "error", message: "Ce format de cours n'est pas disponible actuellement." };
+  }
   const formula = offer.formulas.find((f) => f.id === formulaId);
   if (!formula) {
     return { status: "error", message: "Formule invalide pour ce format de cours." };

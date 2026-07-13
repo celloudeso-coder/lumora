@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { getActivity } from "@/lib/activities";
 import { getPublishedArticles } from "@/lib/data/articles";
 import { formatDate } from "@/lib/format";
@@ -52,6 +53,7 @@ export default async function ActualitesPage() {
           ))}
         </div>
       </Section>
+      <AdditionalPageSections pageSlug="actualites-pilates" />
     </>
   );
 }

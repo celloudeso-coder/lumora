@@ -15,6 +15,7 @@ type SectionOverride = {
   intro: string | null;
   body: string | null;
   is_visible: boolean;
+  is_custom: boolean;
 };
 
 const fieldClass = "mt-2 w-full rounded-xl border border-gold/30 bg-white px-4 py-3 text-sm text-forest outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold/20";
@@ -22,19 +23,29 @@ const fieldClass = "mt-2 w-full rounded-xl border border-gold/30 bg-white px-4 p
 export default async function AdminSectionEditor({ params }: Props) {
   const { slug, sectionKey } = await params;
   const page = getEditablePage(slug);
-  const section = getEditableSection(slug, sectionKey);
-  if (!page || !section) notFound();
+  if (!page) notFound();
 
   const supabase = await createSessionClient();
   const { data, error } = await supabase
     .from("page_sections")
-    .select("title, intro, body, is_visible")
+    .select("title, intro, body, is_visible, is_custom")
     .eq("page_slug", slug)
     .eq("section_key", sectionKey)
     .maybeSingle();
 
   if (error) throw new Error(`Lecture de la section impossible : ${error.message}`);
   const override = data as SectionOverride | null;
+  const registeredSection = getEditableSection(slug, sectionKey);
+  if (!registeredSection && !override?.is_custom) notFound();
+  const section = registeredSection ?? {
+    key: sectionKey,
+    label: override?.title ?? "Section ajoutée",
+    title: override?.title ?? undefined,
+    intro: override?.intro ?? undefined,
+    body: override?.body ?? undefined,
+    kind: "section" as const,
+  };
+  const isCustom = override?.is_custom === true;
 
   return (
     <>
@@ -45,7 +56,7 @@ export default async function AdminSectionEditor({ params }: Props) {
       <AdminPageHeader
         eyebrow={`${page.title} · ${section.kind === "hero" ? "En-tête" : "Section"}`}
         title={section.label}
-        description="Laissez un champ vide pour conserver automatiquement le texte défini dans le code."
+        description={isCustom ? "Modifiez le contenu de cette section ajoutée." : "Laissez un champ vide pour conserver automatiquement le texte défini dans le code."}
       />
 
       <div className="max-w-3xl rounded-2xl border border-gold/25 bg-cream-50 p-5 shadow-[var(--shadow-forest-sm)] sm:p-7">
@@ -58,12 +69,13 @@ export default async function AdminSectionEditor({ params }: Props) {
             <input
               name="title"
               type="text"
+              required={isCustom}
               maxLength={200}
               defaultValue={override?.title ?? ""}
               placeholder={section.title ?? section.label}
               className={fieldClass}
             />
-            <span className="mt-1.5 block text-xs font-light text-forest/50">Par défaut : {section.title ?? section.label}</span>
+            {!isCustom && <span className="mt-1.5 block text-xs font-light text-forest/50">Par défaut : {section.title ?? section.label}</span>}
           </label>
 
           <label className="block text-sm font-medium text-forest">
@@ -78,7 +90,7 @@ export default async function AdminSectionEditor({ params }: Props) {
             />
           </label>
 
-          {section.kind === "hero" ? (
+          {(section.kind === "hero" || isCustom) ? (
             <label className="block text-sm font-medium text-forest">
               Description
               <textarea
@@ -115,7 +127,7 @@ export default async function AdminSectionEditor({ params }: Props) {
             <input type="hidden" name="pageSlug" value={page.slug} />
             <input type="hidden" name="sectionKey" value={section.key} />
             <button type="submit" className="inline-flex items-center gap-2 text-sm text-red-700 transition-colors hover:text-red-900">
-              <RotateCcw className="h-4 w-4" /> Revenir entièrement au contenu par défaut
+              <RotateCcw className="h-4 w-4" /> {isCustom ? "Supprimer cette section" : "Revenir entièrement au contenu par défaut"}
             </button>
           </form>
         )}

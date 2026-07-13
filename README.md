@@ -127,7 +127,13 @@ la page de connexion.
   en-têtes et sections de l'accueil, des activités, du contact, de la galerie
   et des actualités peuvent être renommés, complétés ou masqués. Les surcharges
   sont enregistrées dans `page_sections` ; un champ vide conserve le contenu
-  par défaut du code et l'action de réinitialisation supprime la surcharge
+  par défaut du code et l'action de réinitialisation supprime la surcharge. Le
+  bouton **Ajouter une section** crée un nouveau bloc de texte en fin de page
+- ✅ **Édition centralisée des tarifs** : `Admin > Contenu > Tarifs` permet de
+  modifier ou masquer les prix du Café, des formules Pilates et du Pressing.
+  Les personnalisations vivent dans `pricing_overrides` et les montants du code
+  restent disponibles comme valeurs par défaut. De nouvelles lignes peuvent
+  être ajoutées aux catégories tarifaires existantes puis supprimées
 - ⏳ À venir : création/édition des articles, gestion des statuts, création des
   créneaux, upload d'images, puis déploiement Vercel + Supabase cloud
 

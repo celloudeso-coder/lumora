@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { Clock, MapPin } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { Gallery } from "@/components/ui/Gallery";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { getActivity } from "@/lib/activities";
 import { SITE } from "@/lib/site";
 import { GALLERIES } from "@/lib/images";
 import { formatGNF } from "@/lib/format";
-import { CAFE_MENU, type MenuCategory, type MenuItem } from "@/lib/data/cafe-menu";
+import type { MenuCategory, MenuItem } from "@/lib/data/cafe-menu";
+import { getCafeMenu } from "@/lib/cms/pricing";
 
 export const metadata: Metadata = {
   title: "Lumora Café — Coffee & Lifestyle à Conakry",
@@ -16,8 +18,9 @@ export const metadata: Metadata = {
     "Cafés d'exception, boissons glacées, milkshakes, matcha et jus frais à prix fixes, dans un cadre élégant à Kipé, Conakry.",
 };
 
-export default function CafePage() {
+export default async function CafePage() {
   const activity = getActivity("cafe")!;
+  const menu = await getCafeMenu();
 
   return (
     <>
@@ -46,7 +49,7 @@ export default function CafePage() {
         tone="light"
       >
         <div className="grid gap-6 lg:grid-cols-2">
-          {CAFE_MENU.map((cat) => (
+          {menu.map((cat) => (
             <MenuCategoryCard key={cat.category} category={cat} />
           ))}
         </div>
@@ -91,6 +94,7 @@ export default function CafePage() {
           <SocialLinks className="mt-4 sm:mt-0" />
         </div>
       </Section>
+      <AdditionalPageSections pageSlug="cafe" />
     </>
   );
 }

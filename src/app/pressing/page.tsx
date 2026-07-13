@@ -2,26 +2,17 @@ import type { Metadata } from "next";
 import { Clock, Truck, BadgeCheck } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { getActivity } from "@/lib/activities";
+import { getPressingPrices } from "@/lib/cms/pricing";
+import { formatGNF } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Lumora Pressing — Professional Care à Conakry",
   description:
     "Pressing professionnel à Conakry : nettoyage à sec, repassage, entretien du linge de maison. Tarifs clairs, délais tenus.",
 };
-
-// Tarifs provisoires en GNF — à valider avec la cliente.
-const PRICES = [
-  { item: "Chemise / chemisier", price: "30 000 GNF" },
-  { item: "Pantalon", price: "35 000 GNF" },
-  { item: "Costume 2 pièces", price: "120 000 GNF" },
-  { item: "Robe", price: "80 000 GNF" },
-  { item: "Tenue traditionnelle / boubou", price: "90 000 GNF" },
-  { item: "Veste / manteau", price: "100 000 GNF" },
-  { item: "Parure de draps", price: "60 000 GNF" },
-  { item: "Rideaux (le panneau)", price: "70 000 GNF" },
-];
 
 const COMMITMENTS = [
   {
@@ -41,8 +32,9 @@ const COMMITMENTS = [
   },
 ];
 
-export default function PressingPage() {
+export default async function PressingPage() {
   const activity = getActivity("pressing")!;
+  const prices = await getPressingPrices();
 
   return (
     <>
@@ -81,14 +73,14 @@ export default function PressingPage() {
         tone="light"
       >
         <ul className="panel-forest max-w-xl divide-y divide-gold/20 rounded-2xl border border-gold/30 bg-white px-5">
-          {PRICES.map((p) => (
+          {prices.map((p) => (
             <li
               key={p.item}
               className="flex min-h-12 items-center justify-between gap-3 py-3 text-sm"
             >
               <span className="text-forest/85">{p.item}</span>
               <span className="shrink-0 font-medium text-gold-700">
-                {p.price}
+                {formatGNF(p.price)}
               </span>
             </li>
           ))}
@@ -114,6 +106,7 @@ export default function PressingPage() {
           />
         </div>
       </Section>
+      <AdditionalPageSections pageSlug="pressing" />
     </>
   );
 }

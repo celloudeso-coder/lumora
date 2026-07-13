@@ -45,8 +45,15 @@ Un site statique pur est éliminé d'office par trois besoins :
 Les blocs structurés (prestations, menu du café, tarifs pressing…) restent dans
 le code. Leurs titres, introductions et visibilité peuvent toutefois être
 surchargés depuis l'admin grâce à `page_sections`. Sans surcharge, le rendu
-reprend automatiquement le contenu du code. Le champ `activity` des articles
+reprend automatiquement le contenu du code. Les lignes `is_custom=true`
+représentent des sections libres ajoutées en fin de page depuis le CMS. Le champ `activity` des articles
 permet d'étendre le blog aux autres activités plus tard sans migration.
+
+Les prix suivent le même principe hybride : les grilles de référence restent
+versionnées dans `src/lib/data/`, tandis que `pricing_overrides` conserve les
+montants, libellés et états de visibilité modifiés depuis `Admin > Tarifs`.
+Les lignes `is_custom=true` sont de nouveaux tarifs rattachés à une catégorie
+existante ; les autres restent des surcharges des références du code.
 
 > **État d'implémentation (juillet 2026)** : Supabase est branché **en local** via le
 > Supabase CLI (Docker). Le schéma vit désormais dans `supabase/migrations/` (plus de
@@ -136,7 +143,11 @@ Admin (protégé, dynamique, mobile-first avec barre de navigation basse)
 /admin                   Tableau de bord : compteurs (nouvelles résa/demandes)
 /admin/pages             Pages publiques regroupées par catégorie
 /admin/pages/[slug]      Sections éditables d'une page
+/admin/pages/[slug]/nouvelle  Ajout d'une section libre en fin de page
 /admin/pages/[slug]/[sectionKey]  Édition, visibilité et réinitialisation
+/admin/tarifs            Vue des grilles Café, Pilates et Pressing
+/admin/tarifs/[activity]/nouveau  Ajout d'une ligne tarifaire
+/admin/tarifs/[activity]/[itemKey]  Édition d'un tarif et retour au défaut
 /admin/articles          Liste + créer/éditer/publier/dépublier
 /admin/articles/nouveau
 /admin/articles/[id]

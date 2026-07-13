@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ExternalLink, EyeOff, Pencil } from "lucide-react";
+import { ArrowLeft, ExternalLink, EyeOff, Pencil, Plus } from "lucide-react";
 import { AdminPageHeader } from "@/components/admin/AdminUI";
 import { getEditablePage } from "@/lib/cms/page-registry";
 import { createSessionClient } from "@/lib/supabase/auth-server";
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ saved?: string; reset?: string }>;
+  searchParams: Promise<{ saved?: string; reset?: string; created?: string }>;
 };
 
 type SectionOverride = {
@@ -16,6 +16,7 @@ type SectionOverride = {
   intro: string | null;
   body: string | null;
   is_visible: boolean;
+  is_custom: boolean;
 };
 
 export default async function AdminPageSections({ params, searchParams }: Props) {
@@ -27,7 +28,7 @@ export default async function AdminPageSections({ params, searchParams }: Props)
   const supabase = await createSessionClient();
   const { data, error } = await supabase
     .from("page_sections")
-    .select("section_key, title, intro, body, is_visible")
+    .select("section_key, title, intro, body, is_visible, is_custom")
     .eq("page_slug", page.slug);
 
   if (error) throw new Error(`Lecture des sections impossible : ${error.message}`);
@@ -46,16 +47,20 @@ export default async function AdminPageSections({ params, searchParams }: Props)
         eyebrow="Pages · Sections"
         title={page.title}
         description="Chaque section peut reprendre le contenu prévu dans le code, être personnalisée ou être masquée."
-        action={
-          <Link href={page.href} target="_blank" className="btn-outline">
-            <ExternalLink className="h-4 w-4" /> Voir la page
-          </Link>
-        }
+        action={<div className="flex flex-wrap gap-2">
+          <Link href={`/admin/pages/${page.slug}/nouvelle`} className="btn-primary"><Plus className="h-4 w-4" /> Ajouter une section</Link>
+          <Link href={page.href} target="_blank" className="btn-outline"><ExternalLink className="h-4 w-4" /> Voir la page</Link>
+        </div>}
       />
 
       {query.saved === "1" && (
         <p className="mb-5 rounded-xl border border-forest-100 bg-forest-50 px-4 py-3 text-sm text-forest">
           La section a été enregistrée et la page publique a été actualisée.
+        </p>
+      )}
+      {query.created === "1" && (
+        <p className="mb-5 rounded-xl border border-forest-100 bg-forest-50 px-4 py-3 text-sm text-forest">
+          La nouvelle section a été ajoutée en fin de page.
         </p>
       )}
       {query.reset === "1" && (
@@ -103,6 +108,22 @@ export default async function AdminPageSections({ params, searchParams }: Props)
             </article>
           );
         })}
+        {(data as SectionOverride[]).filter((section) => section.is_custom).map((section) => (
+          <article key={section.section_key} className="rounded-2xl border border-gold/35 bg-gold-50/40 p-5 shadow-[var(--shadow-forest-sm)]">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex rounded-full border border-gold/35 bg-gold-50 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-wide text-gold-800">Section ajoutée</span>
+                  {section.is_visible === false && <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-wide text-red-800"><EyeOff className="h-3 w-3" /> Masquée</span>}
+                </div>
+                <h2 className="mt-3 font-display text-xl font-semibold text-forest">{section.title ?? "Sans titre"}</h2>
+              </div>
+              <Link href={`/admin/pages/${page.slug}/${section.section_key}`} aria-label={`Modifier ${section.title}`} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/30 text-gold-700 hover:bg-gold-100"><Pencil className="h-4 w-4" /></Link>
+            </div>
+            {section.intro && <p className="mt-3 line-clamp-3 text-sm font-light leading-relaxed text-forest/60">{section.intro}</p>}
+            <Link href={`/admin/pages/${page.slug}/${section.section_key}`} className="btn-outline mt-5 w-full"><Pencil className="h-4 w-4" /> Modifier</Link>
+          </article>
+        ))}
       </div>
     </>
   );

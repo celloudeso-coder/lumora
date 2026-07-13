@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { Gallery } from "@/components/ui/Gallery";
 import { BelezaBookingForm } from "@/components/forms/BelezaBookingForm";
 import { getActivity } from "@/lib/activities";
@@ -110,6 +111,7 @@ export default function BelezaPage() {
           <BelezaBookingForm services={SERVICES_LIST} />
         </div>
       </Section>
+      <AdditionalPageSections pageSlug="beleza-beauty" />
     </>
   );
 }

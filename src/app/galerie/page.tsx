@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Images } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { Gallery } from "@/components/ui/Gallery";
 import { GALLERIES } from "@/lib/images";
 
@@ -65,6 +66,7 @@ export default function GaleriePage() {
           <Gallery images={gallery.images} columns={gallery.columns} />
         </Section>
       ))}
+      <AdditionalPageSections pageSlug="galerie" />
     </>
   );
 }

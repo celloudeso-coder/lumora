@@ -3,13 +3,14 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { Gallery } from "@/components/ui/Gallery";
 import { Reveal } from "@/components/ui/Reveal";
 import { PilatesBookingForm } from "@/components/forms/PilatesBookingForm";
 import { getActivity } from "@/lib/activities";
 import { getOpenSlots } from "@/lib/data/slots";
 import { getPublishedArticles } from "@/lib/data/articles";
-import { PILATES_OFFERS } from "@/lib/data/pilates-pricing";
+import { getPilatesOffers } from "@/lib/cms/pricing";
 import { formatDate, formatGNF } from "@/lib/format";
 import { GALLERIES } from "@/lib/images";
 
@@ -21,9 +22,10 @@ export const metadata: Metadata = {
 
 export default async function PilatesPage() {
   const activity = getActivity("pilates")!;
-  const [slots, articles] = await Promise.all([
+  const [slots, articles, offers] = await Promise.all([
     getOpenSlots(),
     getPublishedArticles(),
+    getPilatesOffers(),
   ]);
   const latest = articles.slice(0, 2);
 
@@ -54,7 +56,7 @@ export default async function PilatesPage() {
         tone="light"
       >
         <Reveal className="grid gap-6 sm:grid-cols-2">
-          {PILATES_OFFERS.map((offer) => (
+          {offers.map((offer) => (
             <div
               key={offer.format}
               className="edge-gold panel-forest flex flex-col rounded-2xl border border-gold/30 bg-white p-6"
@@ -111,7 +113,7 @@ export default async function PilatesPage() {
         id="reserver"
       >
         <div className="max-w-xl">
-          <PilatesBookingForm slots={slots} />
+          <PilatesBookingForm slots={slots} offers={offers} />
         </div>
       </Section>
 
@@ -153,6 +155,7 @@ export default async function PilatesPage() {
           Toutes les actualités
         </Link>
       </Section>
+      <AdditionalPageSections pageSlug="pilates" />
     </>
   );
 }

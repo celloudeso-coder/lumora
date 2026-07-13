@@ -11,6 +11,7 @@ import {
   Menu,
   MessageSquareText,
   Newspaper,
+  Tags,
   Settings,
   X,
   type LucideIcon,
@@ -27,6 +28,7 @@ const GROUPS: { label: string; items: AdminItem[] }[] = [
     label: "Contenu",
     items: [
       { href: "/admin/pages", label: "Pages", icon: FileText },
+      { href: "/admin/tarifs", label: "Tarifs", icon: Tags },
       { href: "/admin/articles", label: "Articles", icon: Newspaper },
     ],
   },

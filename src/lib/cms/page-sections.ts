@@ -18,13 +18,15 @@ type PageSectionRow = {
   intro: string | null;
   body: string | null;
   is_visible: boolean;
+  is_custom: boolean;
+  position: number;
 };
 
 export const getPageSectionOverrides = cache(async (pageSlug: string) => {
   const supabase = createPublicServerClient();
   const { data, error } = await supabase
     .from("page_sections")
-    .select("page_slug, section_key, title, intro, body, is_visible")
+    .select("page_slug, section_key, title, intro, body, is_visible, is_custom, position")
     .eq("page_slug", pageSlug);
 
   if (error) {
@@ -35,6 +37,13 @@ export const getPageSectionOverrides = cache(async (pageSlug: string) => {
     (data as PageSectionRow[]).map((row) => [row.section_key, row]),
   );
 });
+
+export async function getCustomPageSections(pageSlug: string) {
+  const overrides = await getPageSectionOverrides(pageSlug);
+  return [...overrides.values()]
+    .filter((section) => section.is_custom)
+    .sort((a, b) => a.position - b.position);
+}
 
 export async function resolvePageSection(
   pageSlug: string,

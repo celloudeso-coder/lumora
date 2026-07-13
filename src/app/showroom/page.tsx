@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Grid2x2, Lightbulb, PaintRoller, Bath, DoorOpen, Layers } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
+import { AdditionalPageSections } from "@/components/ui/AdditionalPageSections";
 import { Gallery } from "@/components/ui/Gallery";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { getActivity } from "@/lib/activities";
@@ -104,6 +105,7 @@ export default function ShowroomPage() {
           />
         </div>
       </Section>
+      <AdditionalPageSections pageSlug="showroom" />
     </>
   );
 }
