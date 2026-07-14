@@ -25,7 +25,8 @@ Un site statique pur est éliminé d'office par trois besoins :
 
 ### Pourquoi Supabase
 
-- **Postgres managé** (articles, créneaux, réservations, demandes) + **Auth** (comptes admin cliente/employé) + **Storage** (images d'articles) dans un seul service, plan gratuit largement suffisant au démarrage.
+- **Postgres managé** (contenus, tarifs, réalisations, articles, créneaux,
+  réservations et demandes) + **Auth** + **Storage** dans un seul service.
 - **Row Level Security (RLS)** : le public ne peut qu'insérer des réservations/demandes et lire les articles publiés ; seuls les comptes admin lisent et gèrent le reste.
 - Pas de serveur à maintenir — critique pour un projet livré à une cliente non technique.
 
@@ -33,11 +34,11 @@ Un site statique pur est éliminé d'office par trois besoins :
 
 | Couche | Choix | Rôle |
 |---|---|---|
-| Framework | **Next.js 15 (App Router, TypeScript)** | Pages publiques statiques (SSG/ISR) + back-office dynamique |
+| Framework | **Next.js 16 (App Router, TypeScript)** | Pages publiques statiques (SSG) + back-office dynamique |
 | UI | **Tailwind CSS v4** | Mobile-first natif (classes de base = mobile, `md:`/`lg:` = agrandissement) |
 | Base de données | **Supabase Postgres** | Articles, créneaux, réservations, demandes |
 | Auth | **Supabase Auth** (email + mot de passe) | 2–3 comptes admin (cliente + employé) |
-| Fichiers | **Supabase Storage** | Images de couverture des articles |
+| Fichiers | **Supabase Storage** | Réalisations Construction et futures couvertures d'articles |
 | Formulaires | **Server Actions** + validation **Zod** | Insertion sécurisée, honeypot anti-spam |
 | Hébergement | **Vercel** | CDN, HTTPS, previews |
 | Polices | `next/font` — serif prestige (ex. Cormorant Garamond) + sans-serif (ex. Inter) | Chargement optimisé, pas de FOUT |
@@ -62,9 +63,9 @@ existante ; les autres restent des surcharges des références du code.
 > publiques passent par `src/lib/data/` (client anon) et les écritures par des Server
 > Actions Zod dans `src/lib/actions/` (client service role). Le socle du back-office
 > `/admin` est maintenant opérationnel : authentification Supabase SSR, proxy Next.js 16,
-> contrôle du rôle, tableau de bord, vues de consultation responsive et édition
-> des sections des pages publiques. Restent à faire : CRUD des contenus métier,
-> upload Storage et déploiement cloud.
+> contrôle du rôle, tableau de bord, édition des pages et tarifs, ainsi que le
+> CRUD des réalisations avec upload Storage. Restent à finaliser : CRUD des
+> articles et créneaux, gestion des statuts, notifications et déploiement cloud.
 
 ## 3. Modèle de données (Supabase)
 
@@ -114,13 +115,25 @@ leads (
 
 -- Profils admin (miroir de auth.users)
 profiles ( id uuid pk references auth.users, full_name text, role text default 'admin' )
+
+page_sections ( page_slug, section_key, title, intro, body, is_visible, is_custom, position )
+
+pricing_overrides (
+  activity, item_key, label, price, price_small, price_medium, price_large,
+  is_visible, is_custom, group_name
+)
+
+construction_projects (
+  id uuid pk, title text, description text, category text,
+  image_url text, location text, completed_at date, is_visible boolean, position int
+)
 ```
 
 **Règles RLS :**
 - `articles` : SELECT public si `status='published'` ; CRUD complet pour rôle authentifié.
 - `class_slots` : SELECT public si `status='open'` et `starts_at > now()` ; CRUD admin.
 - `bookings` / `leads` : **aucun accès public direct** — insertion uniquement via Server Action (clé service côté serveur, jamais dans le navigateur) ; lecture/mise à jour réservées aux admins.
-- Storage `article-images` : lecture publique, écriture admin.
+- Storage `project-images` et `article-images` : lecture publique, écriture admin.
 
 ## 4. Arborescence des routes
 
@@ -136,6 +149,8 @@ Public (statique/ISR, mobile-first)
 /beleza-beauty           Prestations massage/soins + formulaire réservation
 /boutique                Présentation produits, moyens de paiement acceptés + contact
 /showroom                Galerie échantillons + formulaire demande de devis
+/galerie                 Photos regroupées des espaces LUMORA
+/recherche               Recherche transversale dans le site
 /contact                 Coordonnées, carte, liens Facebook/TikTok
 
 Admin (protégé, dynamique, mobile-first avec barre de navigation basse)
@@ -151,20 +166,19 @@ Admin (protégé, dynamique, mobile-first avec barre de navigation basse)
 /admin/realisations       Projets de la page Lumora Construction
 /admin/realisations/nouveau  Ajout avec téléversement d'une photo
 /admin/realisations/[id]  Modification, publication ou suppression
-/admin/articles          Liste + créer/éditer/publier/dépublier
-/admin/articles/nouveau
-/admin/articles/[id]
-/admin/creneaux          Gestion des créneaux Pilates
-/admin/reservations      Pilates + Beleza, filtre par activité/statut
-/admin/demandes          Devis/contact, filtre par activité/statut
+/admin/articles          Consultation (éditeur CRUD à finaliser)
+/admin/creneaux          Consultation (CRUD à finaliser)
+/admin/reservations      Consultation Pilates + Beleza (statuts à finaliser)
+/admin/demandes          Consultation devis/contact (statuts à finaliser)
 ```
 
-Protection : middleware Next.js — toute route `/admin/*` (hors login) exige une session Supabase.
+Protection : proxy Next.js 16 — toute route `/admin/*` (hors login) exige une session Supabase.
 
 ## 5. Stratégie de rendu et performance
 
-- **Pages publiques** : génération statique ; les pages articles utilisent l'ISR avec `revalidateTag` déclenché à la publication → publication visible immédiatement sans redéploiement.
-- **Back-office** : composants client + Server Actions, aucune indexation (`noindex`).
+- **Pages publiques** : génération statique ; les Server Actions du CMS utilisent
+  `revalidatePath` pour actualiser les pages modifiées.
+- **Back-office** : composants serveur par défaut et Server Actions, aucune indexation (`noindex`).
 - **Budget mobile** : images via `next/image` (AVIF/WebP), pas de bibliothèque UI lourde, pas de carrousel JS sur l'accueil, cible Lighthouse mobile ≥ 90.
 - **Tactile** : cibles ≥ 44 px, formulaires courts (nom + téléphone obligatoires, e-mail optionnel — usage WhatsApp dominant), aucun comportement dépendant du hover.
 - **Back-office mobile** : listes en cartes (jamais de tableaux larges), barre d'onglets fixe en bas (Articles / Résa / Demandes), actions par boutons pleine largeur.
@@ -179,7 +193,8 @@ Protection : middleware Next.js — toute route `/admin/*` (hors login) exige un
 --font-body:     sans-serif fine (texte courant)
 ```
 
-Élément graphique récurrent : feuille de thé (SVG plat). Le logo PNG 3D fourni sera décliné en version plate SVG/PNG optimisée pour le header (fond sombre) et le favicon.
+Élément graphique récurrent : feuille de thé. Le logo PNG officiel est optimisé
+et utilisé dans le header, le hero, le footer et le favicon recadré.
 
 ## 7. Notifications (v1 simple)
 

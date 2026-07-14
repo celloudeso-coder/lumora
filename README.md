@@ -1,9 +1,23 @@
 # LUMORA GROUP — Site vitrine
 
 Site vitrine multi-activités de LUMORA GROUP (Conakry, Guinée) — *Elevating Everyday Living*.
-Sept univers : Construction, Café, Pilates, Pressing, Beleza Beauty, Boutique, Show room.
+Sept univers : Construction, Café, Pilates, Pressing, Beleza Beauty, Boutique et Showroom.
 
 Voir [ARCHITECTURE.md](./ARCHITECTURE.md) pour l'architecture complète.
+Voir [PRESENTATION_OFFRE_TECHNIQUE_FINANCIERE.md](./PRESENTATION_OFFRE_TECHNIQUE_FINANCIERE.md)
+pour la présentation fonctionnelle et la trame de chiffrage client.
+
+## Aperçu fonctionnel
+
+Le projet réunit dans une seule plateforme :
+
+- un site public responsive présentant les sept activités de LUMORA GROUP ;
+- des formulaires de contact, devis et réservation reliés à Supabase ;
+- un CMS protégé permettant d'administrer les sections des pages, les tarifs
+  et les réalisations Construction ;
+- un tableau de bord pour consulter les articles, créneaux, réservations et
+  demandes reçues ;
+- une base technique prête pour un déploiement Vercel + Supabase Cloud.
 
 ## Stack
 
@@ -12,10 +26,11 @@ Voir [ARCHITECTURE.md](./ARCHITECTURE.md) pour l'architecture complète.
   les formulaires, la navigation et les animations
 - **Supabase** (Postgres + Auth + Storage) — **branché en local** via le Supabase CLI
   (Docker) : lectures publiques (articles, créneaux) et écritures (réservations,
-  demandes) passent par Supabase, plus de données mockées
+  demandes) passent par Supabase, sans mocks pour ces flux
 - **Supabase SSR** : session admin sécurisée par cookies, rafraîchie dans le
   proxy Next.js et soumise aux politiques RLS
-- Déploiement cible : **Vercel** (pas encore configuré — tout est local pour l'instant)
+- Déploiement cible : **Vercel + Supabase Cloud** (pas encore configuré —
+  l'environnement actuellement validé est local)
 
 ## Prérequis
 
@@ -89,7 +104,10 @@ la page de connexion.
 
 ## État actuel
 
-- ✅ Pages publiques (accueil, 7 activités, galerie, recherche, contact et actualités Pilates)
+État audité au **14 juillet 2026** : développement local fonctionnel, migrations
+Supabase appliquées, build de production validé, déploiement cloud restant.
+
+- ✅ Pages publiques : accueil, 7 activités, galerie, recherche, contact et actualités Pilates
 - ✅ Coordonnées réelles dans [`src/lib/site.ts`](./src/lib/site.ts) (tél/WhatsApp, e-mail, adresse Kipé)
 - ✅ Carte Google Maps intégrée à la page Contact
 - ✅ **Vrai menu du café** (prix Petit/Moyen/Grand en GNF) : [`src/lib/data/cafe-menu.ts`](./src/lib/data/cafe-menu.ts)
@@ -108,6 +126,8 @@ la page de connexion.
 - ✅ Navigation enrichie : progression de lecture, menu mobile animé, lien
   d'évitement clavier, menu Univers avec Boutique et Showroom en accès direct,
   recherche globale et bouton WhatsApp flottant
+- ✅ Footer responsive restructuré : navigation, univers, coordonnées, réseaux
+  sociaux et signature LYNXA tech
 - ✅ **Supabase local branché** : schéma en migration ([`supabase/migrations/`](./supabase/migrations/)),
   clients [`src/lib/supabase/`](./src/lib/supabase/), couche data ([`articles.ts`](./src/lib/data/articles.ts),
   [`slots.ts`](./src/lib/data/slots.ts)) sur de vraies requêtes
@@ -138,8 +158,9 @@ la page de connexion.
   affiche les projets visibles et `Admin > Contenu > Réalisations` permet de
   les ajouter, modifier, ordonner, masquer ou supprimer avec leur photo. Les
   images sont stockées dans le bucket Supabase `project-images`
-- ⏳ À venir : création/édition des articles, gestion des statuts, création des
-  créneaux, upload d'images, puis déploiement Vercel + Supabase cloud
+- ⏳ À venir : création/édition/publication des articles avec leur image,
+  création et modification des créneaux Pilates, mise à jour des statuts des
+  réservations et demandes, notifications, puis déploiement Vercel + Supabase Cloud
 
 ## Gérer les images
 
@@ -183,10 +204,24 @@ automatiquement « Photo à venir ».
 
 ### Images administrées par le CMS
 
-Les images ajoutées depuis l'éditeur d'articles du back-office, notamment les
-couvertures, seront stockées dans le bucket Supabase Storage `article-images`. Leur
-URL est enregistrée en base dans `articles.cover_image_url`; elles ne doivent pas
-être copiées dans `public/images/`.
+- Les photos des réalisations Construction sont déjà téléversées depuis
+  `Admin > Réalisations` dans le bucket public `project-images`. Leur URL est
+  enregistrée dans `construction_projects.image_url`.
+- Le bucket `article-images` est provisionné pour les futures couvertures
+  d'articles. L'éditeur et l'upload des articles restent à finaliser ; l'URL
+  sera enregistrée dans `articles.cover_image_url`.
+
+Les fichiers gérés par Supabase Storage ne doivent pas être dupliqués dans
+`public/images/`.
+
+## Périmètre restant avant mise en production
+
+1. confirmer les contenus, tarifs, liens sociaux et coordonnées définitifs ;
+2. terminer les CRUD Articles, Créneaux et statuts métier ;
+3. créer les projets Supabase Cloud et Vercel puis configurer les secrets ;
+4. migrer les données et créer les comptes administrateurs de production ;
+5. réaliser la recette fonctionnelle, l'audit responsive/SEO et la formation ;
+6. connecter le domaine et organiser la maintenance après lancement.
 
 ## Points d'attention (TODO à confirmer avec la cliente)
 
