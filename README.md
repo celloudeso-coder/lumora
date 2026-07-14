@@ -106,8 +106,8 @@ la page de connexion.
 - ✅ Charte graphique (vert forêt `#1a3d2e`, or `#c9a35c`, crème `#f5f0e8`),
   composants visuels harmonisés et animations accessibles (`prefers-reduced-motion`)
 - ✅ Navigation enrichie : progression de lecture, menu mobile animé, lien
-  d'évitement clavier, menu Services, recherche globale, bouton WhatsApp
-  flottant et retour en haut
+  d'évitement clavier, menu Univers avec Boutique et Showroom en accès direct,
+  recherche globale et bouton WhatsApp flottant
 - ✅ **Supabase local branché** : schéma en migration ([`supabase/migrations/`](./supabase/migrations/)),
   clients [`src/lib/supabase/`](./src/lib/supabase/), couche data ([`articles.ts`](./src/lib/data/articles.ts),
   [`slots.ts`](./src/lib/data/slots.ts)) sur de vraies requêtes

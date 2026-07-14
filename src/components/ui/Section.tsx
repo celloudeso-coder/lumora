@@ -31,7 +31,7 @@ export async function Section({
   return (
     <section
       id={id}
-      className={`section-shell ${tone === "light" ? "section-light bg-cream-50" : "bg-cream"}`}
+      className={`section-shell scroll-mt-20 ${tone === "light" ? "section-light bg-cream-50" : "bg-cream"}`}
     >
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-14 sm:py-16 lg:px-6 lg:py-20">
         {(resolvedTitle || resolvedIntro) && (

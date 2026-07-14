@@ -7,6 +7,7 @@ import logo from "../../../public/images/logo/Logo.png";
 import { FACADE_PHOTO } from "@/lib/images";
 import { SITE } from "@/lib/site";
 import { resolvePageSection } from "@/lib/cms/page-sections";
+import { ScrollToSectionLink } from "@/components/ui/ScrollToSectionLink";
 
 /**
  * Hero de l'accueil « Lumora Glass ».
@@ -33,7 +34,7 @@ export async function HomeHero() {
   const content = await resolvePageSection("accueil", "hero", {
     title: "LUMORA GROUP",
     intro: SITE.slogan,
-    body: "Sept univers réunis sous une même exigence de qualité, à Conakry : construire, savourer, se renforcer, prendre soin de soi et de son quotidien.",
+    body: "Cinq univers réunis sous une même exigence de qualité, à Conakry : construire, savourer, se renforcer, prendre soin de soi et de son quotidien.",
   });
 
   if (!content.isVisible) return null;
@@ -43,9 +44,9 @@ export async function HomeHero() {
       <div className="home-hero-leaves" aria-hidden="true" />
       <div className="home-hero-glow" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-14 px-4 py-16 lg:grid-cols-[1.08fr_0.72fr] lg:px-6 lg:py-20">
+      <div className="relative z-10 mx-auto grid max-w-6xl gap-8 px-4 py-16 lg:grid-cols-[1.08fr_0.72fr] lg:gap-x-14 lg:gap-y-0 lg:px-6 lg:py-20">
         {/* Zone texte */}
-        <div className="home-hero-copy flex flex-col items-center text-center lg:items-start lg:text-left">
+        <div className="home-hero-copy flex flex-col items-center text-center lg:col-start-1 lg:row-start-1 lg:self-end lg:items-start lg:text-left">
           <p className="text-xs uppercase tracking-[0.35em] text-gold">
             {content.intro}
           </p>
@@ -55,22 +56,11 @@ export async function HomeHero() {
           <p className="mt-5 max-w-xl font-light leading-relaxed text-cream/85 lg:text-lg">
             {content.body}
           </p>
-          <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <a href="#activites" className="btn-gold">
-              Découvrir nos activités
-            </a>
-            <Link
-              href="/contact"
-              className="btn border border-cream/60 bg-transparent text-cream hover:border-gold hover:bg-cream/10"
-            >
-              Nous contacter
-            </Link>
-          </div>
         </div>
 
         {/* La façade verticale reste un visuel à part entière au lieu d'être
             recadrée en fond horizontal. Le logo se pose en médaillon. */}
-        <div className="home-visual flex justify-center lg:justify-end">
+        <div className="home-visual flex justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center lg:justify-end">
           {hasFacade ? (
             <div className="relative w-[min(78vw,330px)] pb-10 sm:w-[360px] lg:w-[380px]">
               <figure className="home-facade-card relative aspect-[3/4] overflow-hidden rounded-[2rem] border border-gold/35">
@@ -110,6 +100,20 @@ export async function HomeHero() {
               />
             </div>
           )}
+        </div>
+
+        {/* Sur mobile, les actions suivent l'image. Sur ordinateur, elles
+            reviennent sous le texte dans la première colonne. */}
+        <div className="relative z-20 flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:col-start-1 lg:row-start-2 lg:mt-8 lg:self-start lg:justify-self-start">
+          <ScrollToSectionLink sectionId="activites" className="btn-gold touch-manipulation">
+            Découvrir nos activités
+          </ScrollToSectionLink>
+          <Link
+            href="/contact"
+            className="btn border border-cream/60 bg-transparent text-cream hover:border-gold hover:bg-cream/10"
+          >
+            Nous contacter
+          </Link>
         </div>
       </div>
     </section>

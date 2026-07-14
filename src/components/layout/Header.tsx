@@ -3,9 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Images, Menu, Search, X } from "lucide-react";
+import { ChevronDown, House, Images, Menu, Phone, Search, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { ACTIVITIES } from "@/lib/activities";
+
+const UNIVERSE_ACTIVITIES = ACTIVITIES.filter((activity) => activity.isSubBrand);
+const DIRECT_ACTIVITIES = ACTIVITIES.filter((activity) => !activity.isSubBrand);
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -15,7 +18,7 @@ export function Header() {
   const [progress, setProgress] = useState(0);
   const servicesRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const serviceActive = ACTIVITIES.some((activity) =>
+  const serviceActive = UNIVERSE_ACTIVITIES.some((activity) =>
     pathname.startsWith(`/${activity.slug}`),
   );
 
@@ -94,7 +97,7 @@ export function Header() {
                   : "text-forest hover:bg-forest-50"
               }`}
             >
-              Services
+              Univers
               <ChevronDown
                 className={`h-4 w-4 transition-transform ${servicesOpen ? "rotate-180" : ""}`}
               />
@@ -109,7 +112,7 @@ export function Header() {
               }`}
             >
               <div className="grid grid-cols-2 gap-1.5">
-                {ACTIVITIES.map((activity) => {
+                {UNIVERSE_ACTIVITIES.map((activity) => {
                   const active = pathname.startsWith(`/${activity.slug}`);
                   return (
                     <Link
@@ -139,6 +142,22 @@ export function Header() {
               </div>
             </div>
           </div>
+
+          {DIRECT_ACTIVITIES.map((activity) => {
+            const active = pathname.startsWith(`/${activity.slug}`);
+            return (
+              <Link
+                key={activity.slug}
+                href={`/${activity.slug}`}
+                aria-current={active ? "page" : undefined}
+                className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                  active ? "bg-forest text-cream" : "text-forest hover:bg-forest-50"
+                }`}
+              >
+                {activity.shortName}
+              </Link>
+            );
+          })}
 
           <Link
             href="/galerie"
@@ -192,48 +211,29 @@ export function Header() {
         </button>
       </div>
 
-      {/* Menu mobile plein écran — grandes cibles tactiles */}
+      {/* Tiroir mobile latéral — fond opaque et grandes cibles tactiles. */}
       {open && (
-        <nav
-          aria-label="Navigation mobile"
-          className="mobile-nav glass-cream absolute inset-x-0 top-16 h-[calc(100dvh-4rem)] overflow-y-auto border-t border-gold/20 lg:hidden"
-        >
-          <ul className="divide-y divide-gold/20 px-4 pb-24 pt-2">
-            <li className="py-4">
-              <form
-                action="/recherche"
-                role="search"
-                className="flex min-h-12 items-center rounded-2xl border border-gold/30 bg-white px-4 shadow-sm"
-              >
-                <Search className="h-5 w-5 shrink-0 text-gold-700" aria-hidden="true" />
-                <input
-                  type="search"
-                  name="q"
-                  placeholder="Rechercher un service, une page…"
-                  aria-label="Rechercher sur le site"
-                  className="min-w-0 flex-1 border-0 bg-transparent px-3 text-base text-forest outline-none placeholder:text-forest/40"
-                />
-              </form>
-            </li>
+        <div className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-4rem)] lg:hidden">
+          <button
+            type="button"
+            aria-label="Fermer le menu de navigation"
+            onClick={() => setOpen(false)}
+            className="absolute inset-0 bg-forest-950/45"
+          />
+          <nav
+            aria-label="Navigation mobile"
+            className="mobile-nav absolute inset-y-0 right-0 w-[min(88vw,22rem)] overflow-y-auto border-l border-gold/30 bg-cream-50 shadow-2xl"
+          >
+          <ul className="divide-y divide-gold/20 px-5 pb-10 pt-2">
             <li>
               <Link
                 href="/"
                 onClick={() => setOpen(false)}
                 aria-current={pathname === "/" ? "page" : undefined}
-                className={`flex min-h-14 items-center px-2 font-display text-2xl ${pathname === "/" ? "text-gold-600" : "text-forest"}`}
+                className={`flex min-h-14 items-center gap-3 px-2 font-display text-2xl ${pathname === "/" ? "text-gold-600" : "text-forest"}`}
               >
+                <House className="h-5 w-5 text-gold-700" />
                 Accueil
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/galerie"
-                onClick={() => setOpen(false)}
-                aria-current={pathname.startsWith("/galerie") ? "page" : undefined}
-                className={`flex min-h-14 items-center gap-3 px-2 font-display text-2xl ${pathname.startsWith("/galerie") ? "text-gold-600" : "text-forest"}`}
-              >
-                Galerie
-                <Images className="h-5 w-5 text-gold-700" />
               </Link>
             </li>
             <li>
@@ -243,12 +243,12 @@ export function Header() {
                 aria-expanded={mobileServicesOpen}
                 className={`flex min-h-14 w-full items-center justify-between px-2 font-display text-2xl ${serviceActive ? "text-gold-600" : "text-forest"}`}
               >
-                Services
+                Univers
                 <ChevronDown className={`h-5 w-5 transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} />
               </button>
               {mobileServicesOpen && (
                 <ul className="mb-3 grid gap-2 border-l border-gold/30 pl-3 sm:grid-cols-2">
-                  {ACTIVITIES.map((activity) => {
+                  {UNIVERSE_ACTIVITIES.map((activity) => {
                     const active = pathname.startsWith(`/${activity.slug}`);
                     return (
                       <li key={activity.slug}>
@@ -267,18 +267,63 @@ export function Header() {
                 </ul>
               )}
             </li>
+            {DIRECT_ACTIVITIES.map((activity) => {
+              const active = pathname.startsWith(`/${activity.slug}`);
+              return (
+                <li key={activity.slug}>
+                  <Link
+                    href={`/${activity.slug}`}
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`flex min-h-14 items-center gap-3 px-2 font-display text-2xl ${active ? "text-gold-600" : "text-forest"}`}
+                  >
+                    {activity.shortName}
+                    <activity.icon className="h-5 w-5 text-gold-700" />
+                  </Link>
+                </li>
+              );
+            })}
+            <li>
+              <Link
+                href="/galerie"
+                onClick={() => setOpen(false)}
+                aria-current={pathname.startsWith("/galerie") ? "page" : undefined}
+                className={`flex min-h-14 items-center gap-3 px-2 font-display text-2xl ${pathname.startsWith("/galerie") ? "text-gold-600" : "text-forest"}`}
+              >
+                Galerie
+                <Images className="h-5 w-5 text-gold-700" />
+              </Link>
+            </li>
             <li>
               <Link
                 href="/contact"
                 onClick={() => setOpen(false)}
                 aria-current={pathname.startsWith("/contact") ? "page" : undefined}
-                className={`flex min-h-14 items-center px-2 font-display text-2xl ${pathname.startsWith("/contact") ? "text-gold-600" : "text-forest"}`}
+                className={`flex min-h-14 items-center gap-3 px-2 font-display text-2xl ${pathname.startsWith("/contact") ? "text-gold-600" : "text-forest"}`}
               >
+                <Phone className="h-5 w-5 text-gold-700" />
                 Contact
               </Link>
             </li>
+            <li className="py-4">
+              <form
+                action="/recherche"
+                role="search"
+                className="flex min-h-12 items-center rounded-2xl border border-gold/30 bg-white px-4 shadow-sm"
+              >
+                <Search className="h-5 w-5 shrink-0 text-gold-700" aria-hidden="true" />
+                <input
+                  type="search"
+                  name="q"
+                  placeholder="Rechercher un univers, une page…"
+                  aria-label="Rechercher sur le site"
+                  className="min-w-0 flex-1 border-0 bg-transparent px-3 text-base text-forest outline-none placeholder:text-forest/40"
+                />
+              </form>
+            </li>
           </ul>
-        </nav>
+          </nav>
+        </div>
       )}
       <span
         className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] origin-left bg-gold"
